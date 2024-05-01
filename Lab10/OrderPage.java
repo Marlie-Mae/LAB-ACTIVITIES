@@ -7,13 +7,14 @@ import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class OrderPage extends JFrame {
-    private JLabel nameLabel;
-    private JLabel addressLabel;
-    private JLabel contactLabel;
-    private JLabel remarksLabel;
-    private JTextField totalField; // Added totalField declaration
+    private List<JTable> tables;
+    private List<DefaultTableModel> models;
+    private JTextArea selectedItemsArea;
+    private JTextField totalField;
 
     public OrderPage(String name, String address, String contact, String remarks) {
         initComponents(name, address, contact, remarks);
@@ -23,8 +24,8 @@ public class OrderPage extends JFrame {
         setTitle("Order Page");
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         setSize(690, 590);
-        Color brownColor = new Color(228, 197, 158);
-        getContentPane().setBackground(brownColor);
+        //Color brownColor = new Color(216, 174, 126);
+        getContentPane().setBackground(Color.WHITE);
 
         setLayout(new GridBagLayout());
 
@@ -32,23 +33,26 @@ public class OrderPage extends JFrame {
         constraints.anchor = GridBagConstraints.WEST;
         constraints.insets = new Insets(5, 5, 5, 5);
 
-        nameLabel = new JLabel("Customer's Name: " + name);
+        JLabel nameLabel = new JLabel("Customer's Name: " + name);
         constraints.gridx = 0;
         constraints.gridy = 0;
         constraints.gridwidth = 1;
         add(nameLabel, constraints);
 
-        addressLabel = new JLabel("Address: " + address);
+        JLabel addressLabel = new JLabel("Address: " + address);
         constraints.gridy = 1;
         add(addressLabel, constraints);
 
-        contactLabel = new JLabel("Contact No.: " + contact);
+        JLabel contactLabel = new JLabel("Contact No.: " + contact);
         constraints.gridy = 2;
         add(contactLabel, constraints);
 
-        remarksLabel = new JLabel("Remarks: " + remarks);
+        JLabel remarksLabel = new JLabel("Remarks: " + remarks);
         constraints.gridy = 3;
         add(remarksLabel, constraints);
+
+        tables = new ArrayList<>();
+        models = new ArrayList<>();
 
         JTabbedPane tabbedPane = new JTabbedPane();
         tabbedPane.addTab("Iced Coffee", createTablePanel("Iced Coffee"));
@@ -60,7 +64,7 @@ public class OrderPage extends JFrame {
         constraints.gridy = 7;
         constraints.gridwidth = 2;
         add(tabbedPane, constraints);
-
+        
         try {
             BufferedImage logoImage = ImageIO.read(new File("logo1.png"));
             Image scaledLogoImage = logoImage.getScaledInstance(160, 160, Image.SCALE_SMOOTH);
@@ -77,8 +81,8 @@ public class OrderPage extends JFrame {
         } catch (IOException ex) {
             ex.printStackTrace();
         }
-
-        JLabel totalAmountLabel = new JLabel("                          TOTAL:");
+        
+        JLabel totalAmountLabel = new JLabel("                  TOTAL: Php");
         totalAmountLabel.setFont(totalAmountLabel.getFont().deriveFont(Font.BOLD, totalAmountLabel.getFont().getSize() + 9f));
         totalAmountLabel.setForeground(Color.BLACK);
         totalAmountLabel.setOpaque(false);
@@ -95,6 +99,17 @@ public class OrderPage extends JFrame {
         constraints.gridwidth = 1;
         add(totalField, constraints);
 
+
+        selectedItemsArea = new JTextArea(2, 2);
+        selectedItemsArea.setEditable(false);
+        JScrollPane scrollPane = new JScrollPane(selectedItemsArea);
+        constraints.gridy = 8;
+        constraints.gridx = 0;
+        constraints.gridy = 20;
+        add(scrollPane, constraints);
+        selectedItemsArea.setVisible(false);
+        scrollPane.setVisible(false);
+
         JButton addButton = new JButton("Add");
         addButton.setPreferredSize(new Dimension(100, 35));
         addButton.setFont(addButton.getFont().deriveFont(Font.BOLD, 15));
@@ -103,16 +118,22 @@ public class OrderPage extends JFrame {
         addButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Object[][] orderData = getOrderData(tabbedPane);
-                displayOrderSummary(orderData, name, address, contact, remarks); // Pass customer info to order summary
-                dispose();
+                int confirmation = JOptionPane.showConfirmDialog(OrderPage.this, "Do you want to continue?", "Confirmation", JOptionPane.YES_NO_OPTION);
+                if (confirmation == JOptionPane.YES_OPTION) {
+                    Object[][] orderData = getOrderData();
+                    displaySelectedRows(orderData);
+                    OrderSummaryPage orderSummaryPage = new OrderSummaryPage(name, address, contact, remarks, orderData);
+                    orderSummaryPage.setVisible(true);
+                    dispose();
+                }
             }
         });
-        constraints.gridy++; // Adjusted gridy for addButton
-        constraints.gridx = 2; // Adjusted gridx for addButton
+
+        constraints.gridy++;
+        constraints.gridx = 2;
         constraints.gridy = 11;
         constraints.anchor = GridBagConstraints.CENTER;
-        add(addButton, constraints); // Added the Add button
+        add(addButton, constraints);
 
         setVisible(true);
     }
@@ -126,37 +147,37 @@ public class OrderPage extends JFrame {
         if (type.equals("Iced Coffee")) {
             columnNames = new String[]{"Select", "Choose Order", "Prices", "Quantity"};
             data = new Object[][]{
-                    {false, "Iced Coffee, Cold, Small", "PHP25.00", ""},
-                    {false, "Iced Coffee, Cold, Medium", "PHP50.00", ""},
-                    {false, "Iced Coffee, Cold, Large", "PHP75.00", ""},
+                    {false, "Iced Coffee, Cold, Small", "Php25.00", ""},
+                    {false, "Iced Coffee, Cold, Medium", "Php50.00", ""},
+                    {false, "Iced Coffee, Cold, Large", "Php75.00", ""},
             };
         } else if (type.equals("Frappe")) {
             columnNames = new String[]{"Select", "Choose Order", "Prices", "Quantity"};
             data = new Object[][]{
-                    {false, "Frappe, Hot, Small", "PHP60.00", ""},
-                    {false, "Frappe, Hot, Medium", "PHP80.00", ""},
-                    {false, "Frappe, Hot, Large", "PHP100.00", ""},
+                    {false, "Frappe, Hot, Small", "Php60.00", ""},
+                    {false, "Frappe, Hot, Medium", "Php80.00", ""},
+                    {false, "Frappe, Hot, Large", "Php100.00", ""},
             };
         } else if (type.equals("Espresso")) {
             columnNames = new String[]{"Select", "Choose Order", "Prices", "Quantity"};
             data = new Object[][]{
-                    {false, "Espresso, Hot, Small", "PHP40.00", ""},
-                    {false, "Espresso, Hot, Medium", "PHP60.00", ""},
-                    {false, "Espresso, Hot, Large", "PHP90.00", ""},
+                    {false, "Espresso, Hot, Small", "Php40.00", ""},
+                    {false, "Espresso, Hot, Medium", "Php60.00", ""},
+                    {false, "Espresso, Hot, Large", "Php90.00", ""},
             };
         } else if (type.equals("Latte")) {
             columnNames = new String[]{"Select", "Choose Order", "Prices", "Quantity"};
             data = new Object[][]{
-                    {false, "Latte, Hot, Small", "PHP80.00", ""},
-                    {false, "Latte, Hot, Medium", "PHP100.00", ""},
-                    {false, "Latte, Hot, Large", "PHP120.00", ""},
+                    {false, "Latte, Hot, Small", "Php80.00", ""},
+                    {false, "Latte, Hot, Medium", "Php100.00", ""},
+                    {false, "Latte, Hot, Large", "Php120.00", ""},
             };
         } else if (type.equals("Cappuccino")) {
             columnNames = new String[]{"Select", "Choose Order", "Prices", "Quantity"};
             data = new Object[][]{
-                    {false, "Cappuccino, Hot, Small", "PHP70.00", ""},
-                    {false, "Cappuccino, Hot, Medium", "PHP90.00", ""},
-                    {false, "Cappuccino, Hot, Large", "PHP110.00", ""},
+                    {false, "Cappuccino, Hot, Small", "Php70.00", ""},
+                    {false, "Cappuccino, Hot, Medium", "PhpP90.00", ""},
+                    {false, "Cappuccino, Hot, Large", "Php110.00", ""},
             };
         } else {
             // Default data
@@ -182,10 +203,17 @@ public class OrderPage extends JFrame {
 
         JTableHeader header = table.getTableHeader();
         header.setPreferredSize(new Dimension(header.getWidth(), 30));
+        //header.setBackground(new Color(228, 197, 158)); 
+        header.setBackground(new Color(92, 64, 51));
+        header.setForeground(Color.WHITE); 
+        header.setFont(new Font(header.getFont().getName(), Font.BOLD, 15));
 
         JScrollPane scrollPane = new JScrollPane(table);
         scrollPane.setPreferredSize(new Dimension(400, 124));
         panel.add(scrollPane, BorderLayout.CENTER);
+
+        tables.add(table);
+        models.add(model);
 
         return panel;
     }
@@ -211,50 +239,46 @@ public class OrderPage extends JFrame {
         }
     }
 
-    private Object[][] getOrderData(JTabbedPane tabbedPane) {
-        DefaultTableModel model;
-        Object[][] orderData = new Object[0][0];
-        for (int i = 0; i < tabbedPane.getTabCount(); i++) {
-            Component component = tabbedPane.getComponentAt(i);
-            if (component instanceof JScrollPane) {
-                JScrollPane scrollPane = (JScrollPane) component;
-                JViewport viewport = scrollPane.getViewport();
-                JTable table = (JTable) viewport.getView();
-                model = (DefaultTableModel) table.getModel();
-                for (int row = 0; row < model.getRowCount(); row++) {
-                    Boolean selected = (Boolean) model.getValueAt(row, 0);
-                    if (selected != null && selected) {
-                        String item = (String) model.getValueAt(row, 1);
-                        String price = (String) model.getValueAt(row, 2);
-                        String quantity = (String) model.getValueAt(row, 3);
-                        Object[] rowData = {item, quantity, price};
-                        Object[][] temp = new Object[orderData.length + 1][];
-                        System.arraycopy(orderData, 0, temp, 0, orderData.length);
-                        temp[orderData.length] = rowData;
-                        orderData = temp;
-                    }
+    private Object[][] getOrderData() {
+        List<Object[]> orderDataList = new ArrayList<>();
+        for (int i = 0; i < tables.size(); i++) {
+            JTable table = tables.get(i);
+            DefaultTableModel model = models.get(i);
+            for (int row = 0; row < model.getRowCount(); row++) {
+                Boolean selected = (Boolean) model.getValueAt(row, 0);
+                if (selected != null && selected) {
+                    String item = (String) model.getValueAt(row, 1);
+                    String price = (String) model.getValueAt(row, 2);
+                    String quantity = (String) model.getValueAt(row, 3);
+                    orderDataList.add(new Object[]{item, quantity, price});
                 }
             }
         }
-        return orderData;
+        return orderDataList.toArray(new Object[0][]);
     }
 
-    private void displayOrderSummary(Object[][] orderData, String name, String address, String contact, String remarks) {
-        OrderSummaryPage orderSummaryPage = new OrderSummaryPage(name, address, contact, remarks, orderData);
-        orderSummaryPage.setVisible(true);
-
-        // Print selected rows to console for verification
+    private void displaySelectedRows(Object[][] orderData) {
+        double totalAmount = 0.0;
+        selectedItemsArea.setText(""); // Clear existing text
         for (Object[] rowData : orderData) {
             for (Object item : rowData) {
-                System.out.print(item + " ");
+                selectedItemsArea.append(item.toString() + " ");
             }
-            System.out.println();
+            selectedItemsArea.append("\n");
+
+            // Calculate the total amount
+            double price = Double.parseDouble(rowData[2].toString().replaceAll("[^\\d.]", ""));
+            int quantity = Integer.parseInt(rowData[1].toString());
+            totalAmount += price * quantity;
         }
+        // Set the total amount in the total field
+        totalField.setText(String.format("%.2f", totalAmount));
     }
+
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            OrderPage orderPage = new OrderPage("Loved", "Philippines", "09XX-XXX-XXXX", "No remarks");
+            OrderPage orderPage = new OrderPage("No name", "Philippines", "09XX-XXX-XXXX", "No remarks");
         });
     }
 }
