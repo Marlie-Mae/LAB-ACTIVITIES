@@ -1,5 +1,6 @@
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
@@ -20,7 +21,8 @@ public class OrderSummaryPage extends JFrame {
     private JLabel remarksLabel;
     private JTable orderTable;
     private JTextArea textArea;
-
+    private JTextField totalField;
+    private JLabel total;
     public OrderSummaryPage(String name, String address, String contact, String remarks, Object[][] orderData) {
         initComponents(name, address, contact, remarks, orderData);
     }
@@ -28,8 +30,8 @@ public class OrderSummaryPage extends JFrame {
     private void initComponents(String name, String address, String contact, String remarks, Object[][] orderData) {
         setTitle("Order Summary");
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        setSize(780, 480);
-        Color brownColor = new Color(228, 197, 158); // Cream color RGB values
+        setSize(890, 620);
+        Color brownColor = new Color(228, 197, 158); 
         getContentPane().setBackground(brownColor);
         getContentPane().setBackground(Color.WHITE);
         setLayout(new GridBagLayout());
@@ -58,15 +60,15 @@ public class OrderSummaryPage extends JFrame {
 
         try {
             BufferedImage logoImage = ImageIO.read(new File("logo1.png"));
-            Image scaledLogoImage = logoImage.getScaledInstance(100, 100, Image.SCALE_SMOOTH);
-            BufferedImage roundedLogoImage = new BufferedImage(100, 100, BufferedImage.TYPE_INT_ARGB);
+            Image scaledLogoImage = logoImage.getScaledInstance(130, 130, Image.SCALE_SMOOTH);
+            BufferedImage roundedLogoImage = new BufferedImage(130, 130, BufferedImage.TYPE_INT_ARGB);
             Graphics2D g2d = roundedLogoImage.createGraphics();
-            g2d.setClip(new Ellipse2D.Float(0, 0, 100, 100));
+            g2d.setClip(new Ellipse2D.Float(0, 0, 130, 130));
             g2d.drawImage(scaledLogoImage, 0, 0, null);
             g2d.dispose();
             ImageIcon logoIcon = new ImageIcon(roundedLogoImage);
             JLabel logoLabel = new JLabel(logoIcon);
-            constraints.gridx = 2;
+            constraints.gridx = 3;
             constraints.gridy = 0;
             add(logoLabel, constraints);
         } catch (IOException ex) {
@@ -104,13 +106,34 @@ public class OrderSummaryPage extends JFrame {
 
         // Initialize text area
         textArea = new JTextArea();
-        textArea.setEditable(false); // Ensure text area is not editable
+        textArea.setEditable(false); 
         JScrollPane textAreaScrollPane = new JScrollPane(textArea);
         textAreaScrollPane.setPreferredSize(new Dimension(400, 100));
         constraints.gridx = 0;
         constraints.gridy = 5;
         constraints.gridwidth = 2;
         add(textAreaScrollPane, constraints);
+        
+        
+        JLabel totalAmountLabel = new JLabel("TOTAL: Php");
+        totalAmountLabel.setFont(totalAmountLabel.getFont().deriveFont(Font.BOLD, totalAmountLabel.getFont().getSize() + 5f));
+        totalAmountLabel.setForeground(Color.BLACK);
+        totalAmountLabel.setOpaque(false); 
+        totalAmountLabel.setBackground(new Color(238, 228, 204));
+        constraints.gridx = 2;
+        constraints.gridy = 5;
+        add(totalAmountLabel, constraints);
+        
+        
+        totalField = new JTextField("0.00", 9);
+        totalField.setEditable(false);
+        totalField.setPreferredSize(new Dimension(totalField.getPreferredSize().width, totalField.getPreferredSize().height + 15));
+        constraints.gridx = 3;
+        constraints.gridy = 5;
+        constraints.gridwidth = 1;
+        add(totalField, constraints);
+        
+        
 
         // Add buttons
         JButton addButton = new JButton("Add");
@@ -120,9 +143,26 @@ public class OrderSummaryPage extends JFrame {
         addButton.setForeground(Color.WHITE);
         addButton.addActionListener(e -> {
             addInformationToTextArea();
+            // Compute total amount
+            double totalAmount = 0.0;
+            DefaultTableModel model1 = (DefaultTableModel) orderTable.getModel();
+            for (int i = 0; i < model.getRowCount(); i++) {
+                String quantityString = model.getValueAt(i, 1).toString();
+                String amountString = model.getValueAt(i, 2).toString().replaceAll("[^0-9.]", "");
+                try {
+                    int quantity = Integer.parseInt(quantityString);
+                    double amount = Double.parseDouble(amountString);
+                    totalAmount += quantity * amount;
+                } catch (NumberFormatException ex) {
+                    ex.printStackTrace(); 
+                }
+            }
+            // Update total field
+            totalField.setText(String.format("%.2f", totalAmount));
         });
 
         JButton clearButton = new JButton("Clear");
+        clearButton.setPreferredSize(new Dimension(96, 35));
         clearButton.setFont(clearButton.getFont().deriveFont(Font.BOLD, 15));
         clearButton.setBackground(new Color(92, 64, 51));
         clearButton.setForeground(Color.WHITE);
@@ -134,6 +174,9 @@ public class OrderSummaryPage extends JFrame {
         });
         constraints.gridx = 2;
         constraints.gridy = 6;
+        add(addButton, constraints);
+        
+        constraints.gridx = 3; 
         add(clearButton, constraints);
 
         JButton checkoutButton = new JButton("Checkout");
@@ -142,20 +185,18 @@ public class OrderSummaryPage extends JFrame {
         checkoutButton.setBackground(new Color(92, 64, 51));
         checkoutButton.setForeground(Color.WHITE);
         checkoutButton.addActionListener(e -> {
-        	int confirm = JOptionPane.showConfirmDialog(OrderSummaryPage.this, "Are you sure you want to proceed to checkout?", "Confirm Checkout", JOptionPane.YES_NO_OPTION);
-            new CheckoutPage(name, orderData, orderData).setVisible(true);
-            setVisible(false);
-            dispose();
+            int confirm = JOptionPane.showConfirmDialog(OrderSummaryPage.this, "Are you sure you want to proceed to checkout?", "Confirm Checkout", JOptionPane.YES_NO_OPTION);
+            if (confirm == JOptionPane.YES_OPTION) {
+                new CheckoutPage(name, orderData, orderData).setVisible(true);
+                setVisible(false);
+                dispose();
+            } else {
+                JOptionPane.showMessageDialog(OrderSummaryPage.this, "Checkout cancelled.");
+            }
         });
 
-        constraints.gridy = 5;
-        constraints.gridx = 2;
-        add(addButton, constraints);
-
+        constraints.gridy = 6;
         constraints.gridx = 4;
-        add(clearButton, constraints);
-
-        constraints.gridx = 7;
         add(checkoutButton, constraints);
 
         setVisible(true);
@@ -245,7 +286,6 @@ public class OrderSummaryPage extends JFrame {
         @Override
         public Object getCellEditorValue() {
             if (isPushed) {
-                // Perform the corresponding action based on the button clicked
                 if (label.equals("Edit")) {
                     String newValue = JOptionPane.showInputDialog(button, "Enter new quantity:", "");
                     if (newValue != null) {
