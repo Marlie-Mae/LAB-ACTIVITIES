@@ -1,152 +1,134 @@
+import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.geom.Ellipse2D;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
-public class CustomerDetailsPage extends JFrame {
-    private JTextField nameField;
-    private JTextField addressField;
-    private JTextField contactField;
-    private JTextField remarksField;
+public class CheckoutPage extends JFrame {
+    private JTextArea orderTextArea;
+    private JLabel nameLabel;
+    private JLabel totalLabel;
 
-    public CustomerDetailsPage() {
-        initComponents();
+    public CheckoutPage(String name, Object[][] orderData, Object[][] selectedOrderData) {
+        initComponents(name, orderData, selectedOrderData);
     }
 
-    private void initComponents() {
-        setTitle("Customer's Details Page");
-        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        setSize(500, 460);
-        //Color brownColor = new Color(216, 174, 126); 
-        //getContentPane().setBackground(brownColor);
+    private void initComponents(String name, Object[][] orderData, Object[][] selectedOrderData) {
+        setTitle("Checkout");
+        setSize(490, 600);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         getContentPane().setBackground(Color.WHITE);
-        setLayout(new GridBagLayout());
 
-        GridBagConstraints constraints = new GridBagConstraints();
-        constraints.anchor = GridBagConstraints.WEST;
-        constraints.insets = new Insets(5, 5, 5, 5);
-
-        // Title label
-        JLabel titleLabel = new JLabel("Customer's Details");
+        JLabel titleLabel = new JLabel("ORDER SUMMARY");
         titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
         titleLabel.setFont(new Font("Arial", Font.BOLD, 23));
-        titleLabel.setBorder(BorderFactory.createEmptyBorder(10, 137, 10, 10));
-        constraints.gridx = 0;
-        constraints.gridy = 0;
-        constraints.gridwidth = 2;
-        add(titleLabel, constraints);
+        titleLabel.setBorder(new EmptyBorder(10, 10, 10, 0));
+        titleLabel.setBackground(Color.WHITE); 
+        titleLabel.setOpaque(true); 
 
-        JLabel nameLabel = new JLabel("Customer's Name:");
-        constraints.gridx = 0;
-        constraints.gridy = 1;
-        constraints.gridwidth = 1;
-        add(nameLabel, constraints);
 
-        nameField = new JTextField(22);
-        constraints.gridx = 1;
-        constraints.gridy = 2;
-        add(nameField, constraints);
+        nameLabel = new JLabel("Customer's Name: " + name);
 
-        JLabel addressLabel = new JLabel("Address:");
-        constraints.gridx = 0;
-        constraints.gridy = 3;
-        add(addressLabel, constraints);
+        orderTextArea = new JTextArea();
+        orderTextArea.setEditable(false);
+        orderTextArea.setFont(new Font("Arial", Font.PLAIN, 14));
+        JScrollPane scrollPane = new JScrollPane(orderTextArea);
+        orderTextArea.setBorder(new EmptyBorder(10, 10, 10, 0));
+        scrollPane.setPreferredSize(new Dimension(400, 200)); 
 
-        addressField = new JTextField(22);
-        constraints.gridx = 1;
-        constraints.gridy = 4;
-        add(addressField, constraints);
+        
+        // Add logo
+        try {
+            BufferedImage logoImage = ImageIO.read(new File("logo1.png"));
+            Image scaledLogoImage = logoImage.getScaledInstance(100, 100, Image.SCALE_SMOOTH);
+            BufferedImage roundedLogoImage = new BufferedImage(100, 100, BufferedImage.TYPE_INT_ARGB);
+            Graphics2D g2d = roundedLogoImage.createGraphics();
+            g2d.setClip(new Ellipse2D.Float(0, 0, 100, 100));
+            g2d.drawImage(scaledLogoImage, 0, 0, null);
+            g2d.dispose();
+            ImageIcon logoIcon = new ImageIcon(roundedLogoImage);
+            JLabel logoLabel = new JLabel(logoIcon);
 
-        JLabel contactLabel = new JLabel("Contact No.:");
-        constraints.gridx = 0;
-        constraints.gridy = 5;
-        add(contactLabel, constraints);
+            GridBagConstraints constraints = new GridBagConstraints();
+            constraints.gridx = 1; 
+            constraints.gridy = 0;
 
-        contactField = new JTextField(22);
-        constraints.gridx = 1;
-        constraints.gridy = 6;
-        add(contactField, constraints);
+            JPanel logoPanel = new JPanel(new GridBagLayout());
+            logoPanel.setOpaque(false); 
+            logoPanel.add(logoLabel, constraints);
 
-        JLabel remarksLabel = new JLabel("Remarks:");
-        constraints.gridx = 0;
-        constraints.gridy = 7;
-        add(remarksLabel, constraints);
+            getContentPane().add(logoPanel, BorderLayout.NORTH);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
 
-        remarksField = new JTextField(22);
-        remarksField.setPreferredSize(new Dimension(remarksField.getPreferredSize().width, 80));
-        constraints.gridx = 1;
-        constraints.gridy = 8;
-        add(remarksField, constraints);
+        // Build order summary string
+        StringBuilder orderSummary = new StringBuilder();
+        orderSummary.append("Customer's Name: " + name);
+        orderSummary.append("\n\n");
+        double totalAmount = 0.00;
+        orderSummary.append("Order Details:\n");
+        for (Object[] order : orderData) {
+            orderSummary.append(order[0]).append("\n");
+            orderSummary.append("Quantity: ").append(order[1]).append(", Amount: Php").append(order[2]).append("\n\n");
+            String amountStr = order[2].toString().replaceAll("[^0-9.]", "");
+            double amount = Double.parseDouble(amountStr);
+            double quantity = Double.parseDouble(order[1].toString());
+            totalAmount += quantity * amount;
+        }
+        double deliveryfee = 50.00;
+        double total = totalAmount + deliveryfee;
+        orderSummary.append("Total Amount: Php").append(totalAmount + "0").append("\n");
+        orderSummary.append("\n");
+        orderSummary.append("Delivery fee: Php50.00");
+        orderSummary.append("\n\n\n");
+        orderSummary.append("Total: Php" + total + "0");
 
-        // Adding empty labels for spacing
-        JLabel emptyLabel1 = new JLabel();
-        constraints.gridx = 0;
-        constraints.gridy = 10;
-        add(emptyLabel1, constraints);
+        orderTextArea.setText(orderSummary.toString());
 
-        JLabel emptyLabel2 = new JLabel();
-        constraints.gridx = 1;
-        add(emptyLabel2, constraints);
-
-        JButton cancelButton = new JButton("Cancel");
-        cancelButton.setPreferredSize(new Dimension(100, 40)); // Set preferred size
-        cancelButton.setFont(cancelButton.getFont().deriveFont(Font.BOLD, 15));
-        cancelButton.setBackground(new Color(92, 64, 51));
-        cancelButton.setForeground(Color.WHITE);
-        cancelButton.addActionListener(new ActionListener() {
+        JButton backButton = new JButton("Back");
+        backButton.setPreferredSize(new Dimension(150, 40));
+        backButton.setFont(backButton.getFont().deriveFont(Font.BOLD, 15));
+        backButton.setBackground(new Color(92, 64, 51));
+        backButton.setForeground(Color.WHITE);
+        backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                clearFields();
+                dispose();
+                String remarks = null;
+				String contact = null;
+				String address = null;
+                OrderSummaryPage orderSummaryPage = new OrderSummaryPage(name, address, contact, remarks, orderData);
+                orderSummaryPage.setVisible(true);
             }
         });
-        constraints.gridx = 0;
-        constraints.gridy = 11;
-        constraints.gridwidth = 2;
-        add(cancelButton, constraints);
 
-        JButton proceedButton = new JButton("Proceed");
-        proceedButton.setPreferredSize(new Dimension(100, 40)); // Set preferred size
-        proceedButton.setFont(proceedButton.getFont().deriveFont(Font.BOLD, 15));
-        proceedButton.setBackground(new Color(92, 64, 51));
-        proceedButton.setForeground(Color.WHITE);
-        proceedButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Redirect to the OrderPage
-                dispose(); // Close the current window
-                OrderPage orderPage = new OrderPage(
-                        nameField.getText(),
-                        addressField.getText(),
-                        contactField.getText(),
-                        remarksField.getText()
-                );
-                orderPage.setVisible(true);
-            }
-        });
-        constraints.gridx = 2;
-        constraints.gridy = 11;
-        constraints.gridwidth = 2;
-        add(proceedButton, constraints);
-    }
-
-    private void clearFields() {
-        nameField.setText("");
-        addressField.setText("");
-        contactField.setText("");
-        remarksField.setText("");
-    }
-
-    public String getNameInput() {
-        return nameField.getText();
+        JPanel contentPanel = new JPanel(new BorderLayout());
+        contentPanel.add(titleLabel, BorderLayout.NORTH);
+        contentPanel.add(nameLabel, BorderLayout.CENTER);
+        contentPanel.add(scrollPane, BorderLayout.CENTER);
+        contentPanel.add(backButton, BorderLayout.SOUTH);
+        getContentPane().add(contentPanel);
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                CustomerDetailsPage customerDetailsPage = new CustomerDetailsPage();
-                customerDetailsPage.setVisible(true);
-            }
+        SwingUtilities.invokeLater(() -> {
+            String name = "No name";
+            Object[][] orderData = {
+                    {"Iced Coffee, Cold, Medium", "2", "50.00"},
+                    {"Latte, Hot, Medium", "1", "100.00"}
+            };
+            Object[][] selectedOrderData = {
+                    {"Iced Coffee, Cold, Medium", "2", "50.00"}
+            };
+
+            CheckoutPage checkoutPage = new CheckoutPage(name, orderData, selectedOrderData);
+            checkoutPage.setVisible(true);
         });
     }
 }
