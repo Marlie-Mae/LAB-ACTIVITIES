@@ -14,7 +14,6 @@ public class OrderPage extends JFrame {
     private List<JTable> tables;
     private List<DefaultTableModel> models;
     private JTextArea selectedItemsArea;
-    private JTextField totalField;
 
     public OrderPage(String name, String address, String contact, String remarks) {
         initComponents(name, address, contact, remarks);
@@ -23,8 +22,7 @@ public class OrderPage extends JFrame {
     private void initComponents(String name, String address, String contact, String remarks) {
         setTitle("Order Page");
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        setSize(690, 590);
-        //Color brownColor = new Color(216, 174, 126);
+        setSize(660, 550);
         getContentPane().setBackground(Color.WHITE);
 
         setLayout(new GridBagLayout());
@@ -67,10 +65,10 @@ public class OrderPage extends JFrame {
         
         try {
             BufferedImage logoImage = ImageIO.read(new File("logo1.png"));
-            Image scaledLogoImage = logoImage.getScaledInstance(160, 160, Image.SCALE_SMOOTH);
-            BufferedImage roundedLogoImage = new BufferedImage(160, 160, BufferedImage.TYPE_INT_ARGB);
+            Image scaledLogoImage = logoImage.getScaledInstance(130, 130, Image.SCALE_SMOOTH);
+            BufferedImage roundedLogoImage = new BufferedImage(130, 130, BufferedImage.TYPE_INT_ARGB);
             Graphics2D g2d = roundedLogoImage.createGraphics();
-            g2d.setClip(new Ellipse2D.Float(0, 0, 160, 160));
+            g2d.setClip(new Ellipse2D.Float(0, 0, 130, 130));
             g2d.drawImage(scaledLogoImage, 0, 0, null);
             g2d.dispose();
             ImageIcon logoIcon = new ImageIcon(roundedLogoImage);
@@ -81,24 +79,6 @@ public class OrderPage extends JFrame {
         } catch (IOException ex) {
             ex.printStackTrace();
         }
-        
-        JLabel totalAmountLabel = new JLabel("                  TOTAL: Php");
-        totalAmountLabel.setFont(totalAmountLabel.getFont().deriveFont(Font.BOLD, totalAmountLabel.getFont().getSize() + 9f));
-        totalAmountLabel.setForeground(Color.BLACK);
-        totalAmountLabel.setOpaque(false);
-        totalAmountLabel.setBackground(new Color(238, 228, 204));
-        constraints.gridx = 1;
-        constraints.gridy = 10;
-        add(totalAmountLabel, constraints);
-
-        totalField = new JTextField("0.00", 9);
-        totalField.setEditable(false);
-        totalField.setPreferredSize(new Dimension(totalField.getPreferredSize().width, totalField.getPreferredSize().height + 15));
-        constraints.gridx = 2; // Adjusted gridx for totalField
-        constraints.gridy = 10;
-        constraints.gridwidth = 1;
-        add(totalField, constraints);
-
 
         selectedItemsArea = new JTextArea(2, 2);
         selectedItemsArea.setEditable(false);
@@ -203,9 +183,8 @@ public class OrderPage extends JFrame {
 
         JTableHeader header = table.getTableHeader();
         header.setPreferredSize(new Dimension(header.getWidth(), 30));
-        //header.setBackground(new Color(228, 197, 158)); 
         header.setBackground(new Color(92, 64, 51));
-        header.setForeground(Color.WHITE); 
+        header.setForeground(Color.WHITE);
         header.setFont(new Font(header.getFont().getName(), Font.BOLD, 15));
 
         JScrollPane scrollPane = new JScrollPane(table);
@@ -258,23 +237,14 @@ public class OrderPage extends JFrame {
     }
 
     private void displaySelectedRows(Object[][] orderData) {
-        double totalAmount = 0.0;
-        selectedItemsArea.setText(""); // Clear existing text
+        selectedItemsArea.setText(""); 
         for (Object[] rowData : orderData) {
             for (Object item : rowData) {
                 selectedItemsArea.append(item.toString() + " ");
             }
             selectedItemsArea.append("\n");
-
-            // Calculate the total amount
-            double price = Double.parseDouble(rowData[2].toString().replaceAll("[^\\d.]", ""));
-            int quantity = Integer.parseInt(rowData[1].toString());
-            totalAmount += price * quantity;
         }
-        // Set the total amount in the total field
-        totalField.setText(String.format("%.2f", totalAmount));
     }
-
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
