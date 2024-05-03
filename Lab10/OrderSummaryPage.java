@@ -28,7 +28,7 @@ public class OrderSummaryPage extends JFrame {
     }
 
     private void initComponents(String name, String address, String contact, String remarks, Object[][] orderData) {
-        setTitle("Order Summary");
+        setTitle("Order Summary Page");
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         setSize(890, 620);
         Color brownColor = new Color(228, 197, 158); 
@@ -169,9 +169,12 @@ public class OrderSummaryPage extends JFrame {
         clearButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                model.setRowCount(0);
+                // Clear the text area
+                textArea.setText("");
+                
             }
         });
+
         constraints.gridx = 2;
         constraints.gridy = 6;
         add(addButton, constraints);
