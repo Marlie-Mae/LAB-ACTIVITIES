@@ -5,5 +5,4 @@ public class Main {
 		ans.calculteArea(34.3, 31.3);
 
 	}
-
 }
