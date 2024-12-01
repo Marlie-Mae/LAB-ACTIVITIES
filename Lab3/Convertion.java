@@ -1,5 +1,5 @@
 public class Convertion {
-	 private double celsiusTempt;
+     private double celsiusTempt;
      private double fahrenheitTempt;
      private double newcelsiusTempt;
      private double newfahrenheitTempt;
