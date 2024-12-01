@@ -7,7 +7,6 @@ public class Addition {
 		sum = num1 + num2;
 		System.out.println("The sum is " + sum);
 		
-		return sum;
-		
+		return sum;	
 	}
 }
