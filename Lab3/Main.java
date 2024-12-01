@@ -7,5 +7,4 @@ public class Main {
 		ftoc.fahrenheitToCelsius(64.0);
 
 	}
-	
 }
