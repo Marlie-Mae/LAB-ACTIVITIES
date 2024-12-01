@@ -22,7 +22,6 @@ public class GuiFRame {
 		button3.setBackground(Color.YELLOW);
 
 		frame.setLayout(new FlowLayout());
-		//frame.add(new JButton("Button 1")
 		frame.add(button2);
 		frame.add(button1);
 		frame.add(button3);
