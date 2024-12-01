@@ -7,7 +7,6 @@ public class Rectangle {
 		area = length * width;
 		System.out.println("The area of the rectangle is " + area);
 		
-		return area;
-		
+		return area;	
 	}
 }
