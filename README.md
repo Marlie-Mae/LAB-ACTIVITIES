@@ -1,3 +1,4 @@
+🎓 School Lab Activities & Backup Repository
 Repository
 This repository is a collection of my school lab activities, serving as a backup and archive for easy access and reference. It helps me keep track of my work, organize my projects, and ensure I never lose important files.
 
