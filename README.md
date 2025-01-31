@@ -1,10 +1,11 @@
 🎓 School Lab Activities & Backup Repository
+
 This repository is a collection of my school lab activities, serving as a backup and archive for easy access and reference. It helps me keep track of my work, organize my projects, and ensure I never lose important files.
 
-📌 Purpose
-Backup Storage: Safeguard my lab exercises, assignments, and projects.
-File Archiving: Keep a well-structured archive for future reference.
-Easy Access: Retrieve past activities anytime for review or improvement.
+📌 Purpose <br>
+Backup Storage: Safeguard my lab exercises, assignments, and projects. <br>
+File Archiving: Keep a well-structured archive for future reference. <br>
+Easy Access: Retrieve past activities anytime for review or improvement. <br>
 
 📂 Organization
 📁 Lab Exercises – Contains hands-on coding exercises from different subjects.
