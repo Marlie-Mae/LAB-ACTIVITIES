@@ -7,16 +7,16 @@ File Archiving: Keep a well-structured archive for future reference. <br>
 Easy Access: Retrieve past activities anytime for review or improvement. <br>
 
 <h2>📂 Organization </h2>
-📁 Lab Exercises – Contains hands-on coding exercises from different subjects.
-📁 Database Dumps – Backup copies of database-related projects.
+📁 Lab Exercises – Contains hands-on coding exercises from different subjects. <br>
+📁 Database Dumps – Backup copies of database-related projects. <br>
 
 <h2>🔧 Technologies Used </h2>
-Programming Languages: Java, JavaScript
-Web Development: HTML, CSS, PHP, SQL
-Database: MySQL, SQLite
-Tools: Visual Studio Code, XAMPP
+Programming Languages: Java, JavaScript <br>
+Web Development: HTML, CSS, PHP, SQL <br>
+Database: MySQL, SQLite <br>
+Tools: Visual Studio Code, XAMPP <br>
 
 <h2>🚀 Usage Guide </h2>
-Upload & Update: Regularly commit and push lab activities.
-Organize Files: Keep activities categorized for easy navigation.
-Backup Regularly: Ensure all important work is safely stored.
+Upload & Update: Regularly commit and push lab activities. <br>
+Organize Files: Keep activities categorized for easy navigation. <br>
+Backup Regularly: Ensure all important work is safely stored. <br>
