@@ -36,7 +36,15 @@
             <input type="text" name="school_year_code" placeholder="School year code" required> <br>
             <input type="text" name="school_year" placeholder="School year" required> <br>
             <input type="text" name="semester" placeholder="Semester" required> <br>
-            <input type="number" name="status" placeholder="Status" min="1" max="4" required> <br>
+            <!--<input type="number" name="status" placeholder="Status" min="1" max="4" required> <br> -->
+
+            <!-- Status Dropdown -->
+            <select name="status" required>
+                <option value="">Status</option>
+                <option value="1">Active</option>
+                <option value="0">Inactive</option>
+            </select> <br>
+
             <input type="submit" name="" value="INSERT">
         </form>
     </body>
