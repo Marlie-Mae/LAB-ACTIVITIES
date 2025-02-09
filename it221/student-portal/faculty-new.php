@@ -36,8 +36,15 @@
         <form action="" method="POST">
             <input type="text" name="faculty_code" placeholder="Faculty code" required> <br>
             <input type="text" name="faculty_name" placeholder="Faculty name" required> <br>
-            <input type="text" name="department_code" placeholder="Department code" required> <br>
-            <input type="password" name="password" required> <br>
+
+            <select name="department_code" required>
+                <option value="">Department code</option>
+                <option value="DC001">DC001 - Bachelor of Science in Information Technology</option>
+                <option value="DC002">DC002 - Bachelor of Science in Accountancy</option>
+                <option value="DC003">DC003 - Bachelor of Science in Marketing Management</option>
+            </select> <br>
+
+            <input type="password" name="password" placeholder="Password" required> <br>
             <input type="submit" name="" value="INSERT">
         </form>
     </body>
