@@ -34,7 +34,14 @@
         <form action="" method="POST">
             <input type="text" name="subject_code" placeholder="Subject code" required> <br>
             <input type="text" name="subject_name" placeholder="Subject name" required> <br>
-            <input type="text" name="department_code" placeholder="Department code" required> <br>
+            
+            <select name="department_code" required>
+                <option value="">Department code</option>
+                <option value="D-001">D-001 - Information Technology</option>
+                <option value="D-002">D-002 - Computer Science</option>
+                <option value="D-003">D-003 - Criminology</option>
+            </select> <br>
+
             <input type="submit" name="" value="INSERT">
         </form>
     </body>
