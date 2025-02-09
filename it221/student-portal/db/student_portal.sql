@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3307
--- Generation Time: Feb 03, 2025 at 09:16 AM
+-- Generation Time: Feb 08, 2025 at 09:23 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -37,7 +37,9 @@ CREATE TABLE `tbl_department` (
 --
 
 INSERT INTO `tbl_department` (`department_code`, `department_name`) VALUES
-('D-001', 'Information Technology');
+('D-001', 'Information Technology'),
+('D-002', 'Computer Science'),
+('D-003', 'Criminology');
 
 -- --------------------------------------------------------
 
@@ -100,7 +102,6 @@ CREATE TABLE `tbl_student_info` (
 --
 
 INSERT INTO `tbl_student_info` (`student_no`, `last_name`, `first_name`, `middle_name`, `course_code`, `year_level`, `password`) VALUES
-('', '', '', '', '', 0, '827ccb0eea8a706c4c34a16891f84e7b'),
 ('22-0001', 'Awayan', 'Marlie Mae', 'Borbon', 'BSIT', 3, '827ccb0eea8a706c4c34a16891f84e7b');
 
 -- --------------------------------------------------------
@@ -149,6 +150,12 @@ ALTER TABLE `tbl_school_year`
 --
 ALTER TABLE `tbl_student_info`
   ADD PRIMARY KEY (`student_no`);
+
+--
+-- Indexes for table `tbl_subject`
+--
+ALTER TABLE `tbl_subject`
+  ADD PRIMARY KEY (`subject_code`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
