@@ -32,15 +32,30 @@
             }
         ?>
         <form action="" method="POST">
+            <label for="subject_code">Student No.:</label>
             <input type="text" name="subject_code" placeholder="Subject code" required> <br>
+
+            <label for="subject_name">Subject Name:</label>
             <input type="text" name="subject_name" placeholder="Subject name" required> <br>
             
-            <select name="department_code" required>
-                <option value="">Department code</option>
-                <option value="D-001">D-001 - Information Technology</option>
-                <option value="D-002">D-002 - Computer Science</option>
-                <option value="D-003">D-003 - Criminology</option>
-            </select> <br>
+            <label for="department_code">Department Code:</label>
+            <select name="department_code" id="">
+                <option value="" disabled selected>Select a department</option>
+                <?php
+                    $query = mysqli_query($connection, "SELECT * FROM tbl_department"); 
+                    $rows = mysqli_num_rows($query);
+                    if ($rows > 0) {
+                        while ($data = mysqli_fetch_assoc($query)) {
+                ?>
+                            <option value="<?php echo $data['department_code']; ?>">
+                                <?php echo $data['department_code']; ?>
+                            </option>
+                <?php  
+                        }
+                    }
+                ?>
+            </select>
+            <br>
 
             <input type="submit" name="" value="INSERT">
         </form>
