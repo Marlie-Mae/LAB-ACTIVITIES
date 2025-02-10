@@ -37,13 +37,42 @@
             }
         ?>
         <form action="" method="POST">
+            <label for="student_no">Student No.:</label>
             <input type="text" name="student_no" placeholder="Student no." required> <br>
+
+            <label for="l_name">Last Name:</label>
             <input type="text" name="l_name" placeholder="Last name" required> <br>
+
+            <label for="f_name">First Name:</label>
             <input type="text" name="f_name" placeholder="First name" required> <br>
+
+            <label for="m_name">Middle Name:</label>
             <input type="text" name="m_name" placeholder="Middle name"> <br>
-            <input type="text" name="course_code" placeholder="Course" required> <br>
+
+            <label for="course_code">Course:</label>
+            <select name="course_code" id="">
+                <option value="" disabled selected>Select a course</option>
+                <?php
+                    $query = mysqli_query($connection, "SELECT * FROM tbl_course"); 
+                    $rows = mysqli_num_rows($query);
+                    if ($rows > 0) {
+                        while ($data = mysqli_fetch_assoc($query)) {
+                ?>
+                            <option value="<?php echo $data['course_code']; ?>">
+                                <?php echo $data['course_code']; ?>
+                            </option>
+                <?php  
+                        }
+                    }
+                ?>
+            </select>
+            <br>
+
+            <label for="year_level">Year Level:</label>
             <input type="number" name="year_level" placeholder="Year level" min="1" max="4" required> <br>
-            <input type="password" name="password" required> <br>
+
+            <label for="password">Password:</label>
+            <input type="password" name="password" placeholder="Password" required> <br>
             <input type="submit" name="" value="INSERT">
         </form>
     </body>
