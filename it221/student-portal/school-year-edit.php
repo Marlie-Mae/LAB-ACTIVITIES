@@ -32,8 +32,17 @@
             <label for="semester">Semester:</label>
             <input type="text" name="semester" placeholder="Semester" required value="<?php if(isset($data['semester'])) {echo $data["semester"];} ?>"> <br>
 
+            <!--
             <label for="status">Status:</label>
             <input type="text" name="status" placeholder="Status" required value="<?php if(isset($data['status'])) {echo $data["status"];} ?>"> <br>
+            -->
+
+            <label for="status">Status:</label>
+                <select name="status" required>
+                    <option value="" disabled selected>Select Status</option>
+                    <option value="1" <?php echo (isset($data['status']) && $data['status'] == 1) ? "selected" : ""; ?>>Active</option>
+                    <option value="0" <?php echo (isset($data['status']) && $data['status'] == 0) ? "selected" : ""; ?>>Inactive</option>
+                </select> <br>
 
             <input type="submit" name="" value="UPDATE">
         </form>
