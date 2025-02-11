@@ -33,14 +33,19 @@
             }
         ?>
         <form action="" method="POST">
+            
+            <label for="school_year_code">School Year Code:</label>
             <input type="text" name="school_year_code" placeholder="School year code" required> <br>
-            <input type="text" name="school_year" placeholder="School year" required> <br>
-            <input type="text" name="semester" placeholder="Semester" required> <br>
-            <!--<input type="number" name="status" placeholder="Status" min="1" max="4" required> <br> -->
 
-            <!-- Status Dropdown -->
+            <label for="school_year">School Year:</label>
+            <input type="text" name="school_year" placeholder="School year" required> <br>
+
+            <label for="semester">Semester:</label>
+            <input type="text" name="semester" placeholder="Semester" required> <br>
+
+            <label for="status">Status:</label>
             <select name="status" required>
-                <option value="">Status</option>
+                <option value="" disabled selected>Select Status</option>
                 <option value="1">Active</option>
                 <option value="0">Inactive</option>
             </select> <br>
