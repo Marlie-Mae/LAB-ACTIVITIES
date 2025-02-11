@@ -32,7 +32,7 @@
             }
         ?>
         <form action="" method="POST">
-            <label for="subject_code">Student No.:</label>
+            <label for="subject_code">Subject Code:</label>
             <input type="text" name="subject_code" placeholder="Subject code" required> <br>
 
             <label for="subject_name">Subject Name:</label>
