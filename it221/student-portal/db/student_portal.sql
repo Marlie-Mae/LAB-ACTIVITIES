@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3307
--- Generation Time: Feb 08, 2025 at 09:23 AM
+-- Generation Time: Feb 11, 2025 at 03:47 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -24,6 +24,34 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `tbl_course`
+--
+
+CREATE TABLE `tbl_course` (
+  `course_code` varchar(20) NOT NULL,
+  `course_description` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `tbl_course`
+--
+
+INSERT INTO `tbl_course` (`course_code`, `course_description`) VALUES
+('BEED', 'Bachelor of Elementary Education'),
+('BSACC', 'Bachelor of Science in Accountancy'),
+('BSBA', 'Bachelor of Science in Business Administration'),
+('BSCS', 'Bachelor of Science in Computer Science'),
+('BSECE', 'Bachelor of Science in Electronics Engineering'),
+('BSED', 'Bachelor of Secondary Education'),
+('BSHM', 'Bachelor of Science in Hospitality Management'),
+('BSIT', 'Bachelor of Science in Information Technology'),
+('BSME', 'Bachelor of Science in Mechanical Engineering'),
+('BSN', 'Bachelor of Science in Nursing'),
+('BSP', 'Bachelor of Science in Psychology');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `tbl_department`
 --
 
@@ -37,9 +65,16 @@ CREATE TABLE `tbl_department` (
 --
 
 INSERT INTO `tbl_department` (`department_code`, `department_name`) VALUES
-('D-001', 'Information Technology'),
-('D-002', 'Computer Science'),
-('D-003', 'Criminology');
+('ACC', 'Accountancy'),
+('BUS', 'Business Administration'),
+('CS', 'Computer Science'),
+('EDU', 'Education'),
+('ENG', 'Engineering'),
+('HRM', 'Hotel and Restaurant Management'),
+('IT', 'Information Technology'),
+('MKT', 'Marketing Management'),
+('NURS', 'Nursing'),
+('PSY', 'Psychology');
 
 -- --------------------------------------------------------
 
@@ -59,7 +94,7 @@ CREATE TABLE `tbl_faculty` (
 --
 
 INSERT INTO `tbl_faculty` (`faculty_code`, `faculty_name`, `department_code`, `password`) VALUES
-('F-001', 'Ryan Fadrigo', 'D-001', '827ccb0eea8a706c4c34a16891f84e7b');
+('F-001', 'Maylane Ballita', 'IT', '827ccb0eea8a706c4c34a16891f84e7b');
 
 -- --------------------------------------------------------
 
@@ -102,7 +137,8 @@ CREATE TABLE `tbl_student_info` (
 --
 
 INSERT INTO `tbl_student_info` (`student_no`, `last_name`, `first_name`, `middle_name`, `course_code`, `year_level`, `password`) VALUES
-('22-0001', 'Awayan', 'Marlie Mae', 'Borbon', 'BSIT', 3, '827ccb0eea8a706c4c34a16891f84e7b');
+('22-0001', 'Awayan', 'Marlie Mae', 'Borbon', 'BSIT', 3, '827ccb0eea8a706c4c34a16891f84e7b'),
+('22-0002', 'Lim', 'Fatima', 'Reyes', 'BSCS', 1, '827ccb0eea8a706c4c34a16891f84e7b');
 
 -- --------------------------------------------------------
 
@@ -121,11 +157,20 @@ CREATE TABLE `tbl_subject` (
 --
 
 INSERT INTO `tbl_subject` (`subject_code`, `subject_name`, `department_code`) VALUES
-('IT221', 'Elective 4', 'D-001');
+('IT220', 'Software Engineering', 'IT'),
+('IT221', 'Elective 4', 'IT'),
+('ITC128', 'Social and Professional Issure', 'IT'),
+('ITC129', 'Computer Organization', 'IT');
 
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `tbl_course`
+--
+ALTER TABLE `tbl_course`
+  ADD PRIMARY KEY (`course_code`);
 
 --
 -- Indexes for table `tbl_department`
