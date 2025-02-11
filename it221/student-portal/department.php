@@ -29,7 +29,7 @@
                     <td><?php echo $data['department_code']; ?></td>
                     <td><?php echo $data['department_name']; ?></td>
                     <td>
-                        <a href="department-edit.php?student_no=<?php echo $data['department_code']; ?>">Edit</a>
+                        <a href="department-edit.php?department_code=<?php echo $data['department_code']; ?>">Edit</a>
                     </td>
                 </tr>
                 <?php } ?>
