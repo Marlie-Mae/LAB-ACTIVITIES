@@ -1,6 +1,6 @@
 <?php
     include("cn.php");
-    if (isset($_GET['student_no'])) {
+    if (isset($_GET['course_code'])) {
         $course_code = mysqli_real_escape_string($connection, $_GET['course_code']);
         $query = mysqli_query($connection, "SELECT * FROM tbl_course WHERE course_code = '$course_code'");
         $rows = mysqli_num_rows($query);
@@ -26,8 +26,8 @@
             <label for="course_code">Course Code:</label>
             <input type="text" name="course_code" placeholder="course_code" required value="<?php if(isset($course_code)) { echo $course_code;} ?>"> <br>
 
-            <label for="course_name">Course Name:</label>
-            <input type="text" name="course_name" placeholder="Course name" required value="<?php if(isset($data['course_name'])) {echo $data["course_name"];} ?>"> <br>
+            <label for="course_description">Course Description:</label>
+            <input type="text" name="course_description" placeholder="Course description" required value="<?php if(isset($data['course_description'])) {echo $data["course_description"];} ?>"> <br>
 
             <input type="submit" name="" value="UPDATE">
         </form>
