@@ -33,7 +33,7 @@
                     <td><?php echo $data['semester']; ?></td>
                     <td><?php echo $data['status']; ?></td>
                     <td>
-                        <a href="school_year-edit.php?school_year_code=<?php echo $data['school_year_code']; ?>">Edit</a>
+                        <a href="school-year-edit.php?school_year_code=<?php echo $data['school_year_code']; ?>">Edit</a>
                     </td>
                 </tr>
                 <?php } ?>
