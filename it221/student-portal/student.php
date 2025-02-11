@@ -37,7 +37,7 @@
                     <td><?php echo $data['course_code']; ?></td>
                     <td><?php echo $data['year_level']; ?></td>
                     <td>
-                        <a href="edit.php?student_no=<?php echo $data['student_no']; ?>">Edit</a>
+                        <a href="student-edit.php?student_no=<?php echo $data['student_no']; ?>">Edit</a>
                     </td>
                 </tr>
                 <?php } ?>
