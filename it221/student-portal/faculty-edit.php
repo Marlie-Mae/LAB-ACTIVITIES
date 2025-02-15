@@ -46,7 +46,7 @@
         <?php if(isset($display)) {echo $display; } ?>
         <form action="" method="POST">
             <label for="faculty_code">Faculty Code:</label>
-            <input type="text" name="faculty_code" placeholder="Faculty Code" required value="<?php if(isset($faculty_code)) { echo $faculty_code;} ?>"> <br>
+            <input type="text" name="faculty_code" placeholder="Faculty code" required value="<?php if(isset($faculty_code)) { echo $faculty_code;} ?>"> <br>
 
             <label for="faculty_name">Faculty Name:</label>
             <input type="text" name="faculty_name" placeholder="Faculty name" required value="<?php if(isset($data['faculty_name'])) {echo $data["faculty_name"];} ?>"> <br>
