@@ -64,10 +64,14 @@
             <select name="course_code" id="">
                 <option value="" disabled selected>Select a course</option>
                 <?php
-                $course_query = mysqli_query($connection, "SELECT * FROM tbl_course"); 
-                while ($course_row = mysqli_fetch_assoc($course_query)) {
-                    $selected = ($course_row['course_code'] == $data['course_code']) ? "selected" : "";
-                    echo "<option value='{$course_row['course_code']}' $selected>{$course_row['course_code']}</option>";
+                $query = mysqli_query($connection, "SELECT * FROM tbl_course"); 
+                $rows = mysqli_num_rows($query);
+                while ($course = mysqli_fetch_assoc($query)) {
+                >? 
+                <option value="<?php echo $course['course_code']; ?>" <?php if($course_code == $course["course_code"]) {echo "selected"; }?>>
+
+                <?php echo $course['course_code']; ?> </option>
+                <?php } ?>
                 }
                 ?>
             </select>
