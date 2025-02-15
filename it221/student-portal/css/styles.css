@@ -94,3 +94,45 @@ input[type="submit"]:hover {
     font-weight: 400;
     text-align: center;
 }
+
+/* Profile Container */
+.profile-container {
+    background: #D0EDA2; /* Light Green */
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.15);
+    width: 400px;
+    text-align: center;
+}
+
+/* Profile Details */
+p {
+    font-size: 16px;
+    color: #2E5824; /* Deep Green */
+    font-weight: 400;
+    background-color: #FFFDEA; /* Soft Beige */
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+/* Logout Link Styled as Button */
+.logout-btn {
+    display: block;
+    padding: 12px;
+    background-color: #FFD02A; /* Gold */
+    border: none;
+    color: #2E5824; /* Deep Green */
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 8px;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    margin-top: 20px;
+}
+
+.logout-btn:hover {
+    background-color: #E6BA28; /* Slightly darker Gold */
+}
