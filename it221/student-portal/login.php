@@ -26,17 +26,31 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="css/styles.css">
     <title>Login</title>
 </head>
 <body>
+    <!--
     <?php
-        if(isset($display)) {
-            echo $display;
-        }
+            if(isset($display)) {
+                echo "<p class='error-message'>$display</p>";
+            }
     ?>
+    -->
     <form action="" method="POST">
-        <input type="text" name="student_no" required> <br>
-        <input type="password" name="password" required> <br>
+        <h1>Login Student</h1>
+
+        <?php
+            if(isset($display)) {
+                echo "<p class='error-message'>$display</p>";
+            }
+        ?>
+
+        <label for="student_no">Student No.</label>
+        <input type="text" name="student_no" placeholder="Student no" required> <br>
+
+        <label for="password">Password</label>
+        <input type="password" name="password" placeholder="Password" required> <br>
         <input type="submit" name="login" value="LOGIN">
     </form>
 </body>
