@@ -25,7 +25,7 @@
         $check_student = mysqli_query($connection, "SELECT * FROM tbl_student_info WHERE student_no = '$student_no'");
         $rows = mysqli_num_rows($check_student);
         if ($rows == 1) {
-            $sql = "UPDATE tbl_student_info SET last_name = '$l_name', first_name = '$f_name', middle_name = $m_name, course_code = $'course_code', year_level = $year_level WHERE student_no = $'student_no'";
+            $sql = "UPDATE tbl_student_info SET last_name = '$l_name', first_name = '$f_name', middle_name = '$m_name', course_code = '$course_code', year_level = $year_level WHERE student_no = '$student_no'";
             if (mysqli_query($connection,$sql)) {
                 header("location: student.php");
             } else {
