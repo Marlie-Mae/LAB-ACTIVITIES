@@ -1,7 +1,10 @@
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
 /* General Styles */
 body {
     font-family: 'Poppins', sans-serif;
-    background-color: #f0f4f8;  /* Light Grayish Blue */
+    background-color: #367A2F; /* Dark Green */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -11,62 +14,83 @@ body {
 
 /* Form Container */
 form {
-    background: #ffffff; /* White */
-    padding: 25px;
+    background: #D0EDA2; /* Light Green */
+    padding: 30px;
     border-radius: 12px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-    width: 350px;
-    text-align: center;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.15);
+    width: 380px;
 }
 
 /* Heading */
 h1 {
     margin-bottom: 20px;
-    color: #333333; /* Dark Gray */
+    color: #2E5824; /* Deep Green */
+    font-weight: 600;
+    text-align: center;
+}
+
+/* Labels */
+label {
+    display: block;
+    font-weight: 600;
+    color: #2E5824; /* Deep Green */
+    margin-bottom: 5px;
 }
 
 /* Input Fields */
 input[type="text"],
 input[type="password"] {
-    width: 80%;
+    width: 90%;
     padding: 12px;
-    margin: 10px auto;
-    border: 2px solid #8a94a6; /* Muted Blue-Gray */
+    margin: 0 auto 15px;
+    display: block;
+    border: 2px solid #2E5824; /* Deep Green */
     border-radius: 8px;
     font-size: 16px;
-    display: block;
-    text-align: center;
     outline: none;
-    transition: 0.3s;
+    transition: all 0.3s ease-in-out;
+    background-color: #FFFDEA; /* Soft Beige */
+    color: #333;
+    text-align: left;
+}
+
+input[type="text"]::placeholder,
+input[type="password"]::placeholder {
+    text-align: left;
+    color: #888;
 }
 
 input[type="text"]:focus,
 input[type="password"]:focus {
-    border-color: #6a5acd; /* Slate Blue */
-    box-shadow: 0px 0px 5px rgba(106, 90, 205, 0.5);
+    border-color: #FFD02A; /* Gold */
+    box-shadow: 0px 0px 6px rgba(255, 208, 42, 0.6);
 }
 
 /* Submit Button */
 input[type="submit"] {
-    width: 85%;
+    width: 100%;
     padding: 12px;
-    background-color: #6a5acd; /* Slate Blue */
+    background-color: #FFD02A; /* Gold */
     border: none;
-    color: white;
+    color: #2E5824; /* Deep Green */
     font-size: 16px;
+    font-weight: 600;
     border-radius: 8px;
     cursor: pointer;
-    transition: 0.3s;
-    display: block;
-    margin: 15px auto;
+    transition: all 0.3s ease-in-out;
 }
 
 input[type="submit"]:hover {
-    background-color: #483d8b; /* Dark Slate Blue */
+    background-color: #E6BA28; /* Slightly darker Gold */
 }
 
 /* Error Message */
 .error-message {
-    color: red;
+    color: #D32F2F; /* Red */
+    background-color: #FFEBEE; /* Light Red */
+    padding: 10px;
+    border-radius: 8px;
     margin-bottom: 15px;
+    font-weight: 400;
+    text-align: center;
 }
