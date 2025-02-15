@@ -49,7 +49,7 @@
         <?php if(isset($display)) {echo $display; } ?>
         <form action="" method="POST">
             <label for="student_no">Student No.:</label>
-            <input type="text" name="student_no" placeholder="Student no." required value="<?php if(isset($student_no)) { echo $student_no;} ?>"> <br>
+            <input type="text" name="student_no" placeholder="Student no." required value="<?php if(isset($data['$student_no'])) { echo $data["student_no"];} ?>"> <br>
 
             <label for="l_name">Last Name:</label>
             <input type="text" name="l_name" placeholder="Last name" required value="<?php if(isset($data['last_name'])) {echo $data["last_name"];} ?>"> <br>
