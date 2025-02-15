@@ -37,7 +37,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Edit Student</title>
+        <title>Edit Course</title>
     </head>
     <body>
         <?php if(isset($status)) {echo $status; } ?>
