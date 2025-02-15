@@ -7,11 +7,31 @@
         if ($rows > 0) {
             $data = mysqli_fetch_assoc($query);
         } else {
-            echo "School Year Code not found";
+            echo "Schoo Year Code not found";
         }
     } else {
         header("location: school-year.php");
     }
+
+    if ($_SERVER['REQUEST_METHOD'] == "POST") {
+        $school_year_code = mysqli_real_escape_string($connection, $_POST['school_year_code']);
+        $school_year = mysqli_real_escape_string($connection, $_POST['school_year']);
+        $semester = mysqli_real_escape_string($connection, $_POST['semester']);
+        $status = mysqli_real_escape_string($connection, $_POST['status']);
+
+        $check_school_year = mysqli_query($connection, "SELECT * FROM tbl_school_year WHERE school_year_code = '$school_year_code'");
+        $rows = mysqli_num_rows($check_school_year);
+        if ($rows == 1) {
+            $sql = "UPDATE tbl_school_year SET school_year = '$school_year', semester = '$semester', status = '$status' WHERE school_year_code = '$school_year_code'";
+            if (mysqli_query($connection,$sql)) {
+                header("location: school-year.php");
+            } else {
+                $display = "Failed to update records.";
+            }
+        } else {
+            $display = "School Year Code not found.";
+        }
+    } 
 ?>
 
 <!DOCTYPE html>
@@ -22,6 +42,8 @@
         <title>Edit School Year</title>
     </head>
     <body>
+        <?php if(isset($status)) {echo $status; } ?>
+        <?php if(isset($display)) {echo $display; } ?>
         <form action="" method="POST">
             <label for="school_year_code">School Year Code:</label>
             <input type="text" name="school_year_code" placeholder="School year code" required value="<?php if(isset($school_year_code)) { echo $school_year_code;} ?>"> <br>
