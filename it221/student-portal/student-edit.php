@@ -67,12 +67,11 @@
                 $query = mysqli_query($connection, "SELECT * FROM tbl_course"); 
                 $rows = mysqli_num_rows($query);
                 while ($course = mysqli_fetch_assoc($query)) {
-                >? 
+                ?>
                 <option value="<?php echo $course['course_code']; ?>" <?php if($course_code == $course["course_code"]) {echo "selected"; }?>>
 
                 <?php echo $course['course_code']; ?> </option>
                 <?php } ?>
-                }
                 ?>
             </select>
             <br>
