@@ -6,12 +6,35 @@
         $rows = mysqli_num_rows($query);
         if ($rows > 0) {
             $data = mysqli_fetch_assoc($query);
+            $course_code = $data['course_code'];
         } else {
             echo "Student No. not found";
         }
     } else {
         header("location: student.php");
     }
+
+    if ($_SERVER['REQUEST_METHOD'] == "POST") {
+        $student_no = mysqli_real_escape_string($connection, $_POST['student_no']);
+        $l_name = mysqli_real_escape_string($connection, $_POST['l_name']);
+        $f_name = mysqli_real_escape_string($connection, $_POST['f_name']);
+        $m_name = mysqli_real_escape_string($connection, $_POST['m_name']);
+        $course_code = mysqli_real_escape_string($connection, $_POST['course_code']);
+        $year_level = mysqli_real_escape_string($connection, $_POST['year_level']);
+
+        $check_student = mysqli_query($connection, "SELECT * FROM tbl_student_info WHERE student_no = '$student_no'");
+        $rows = mysqli_num_rows($check_student);
+        if ($rows == 1) {
+            $sql = "UPDATE tbl_student_info SET last_name = '$l_name', first_name = '$f_name', middle_name = $m_name, course_code = $'course_code', year_level = $year_level WHERE student_no = $'student_no'";
+            if (mysqli_query($connection,$sql)) {
+                header("location: student.php");
+            } else {
+                $display = "Failed to update records.";
+            }
+        } else {
+            $display = "Student No. not found.";
+        }
+    } 
 ?>
 
 <!DOCTYPE html>
@@ -22,6 +45,8 @@
         <title>Edit Student</title>
     </head>
     <body>
+        <?php if(isset($status)) {echo $status; } ?>
+        <?php if(isset($display)) {echo $display; } ?>
         <form action="" method="POST">
             <label for="student_no">Student No.:</label>
             <input type="text" name="student_no" placeholder="Student no." required value="<?php if(isset($student_no)) { echo $student_no;} ?>"> <br>
