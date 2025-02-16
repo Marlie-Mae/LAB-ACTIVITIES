@@ -39,23 +39,56 @@ label {
 
 /* Input Fields */
 input[type="text"],
-input[type="number"],
 input[type="password"] {
     width: 96%;
     padding: 10px;
     margin-bottom: 15px;
-    border: 1px solid #ccc;
+    border: 2px solid #2E5824;
     border-radius: 5px;
     font-size: 14px;
+    outline: none;
+    transition: all 0.3s ease-in-out;
+    background-color: #FFFDEA; /* Soft Beige */
+    color: #333;
+    text-align: left;
+}
+
+/* Input Fields */
+input[type="number"] {
+    width: 96%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 2px solid #2E5824;
+    border-radius: 5px;
+    font-size: 14px;
+    outline: none;
+    transition: all 0.3s ease-in-out;
+    color: #333;
+    text-align: left;
+    background-color: #FFFDEA !important; /* Soft Beige */
 }
 
 select {
     width: 100%;
     padding: 10px;
     margin-bottom: 15px;
-    border: 1px solid #ccc;
+    border: 2px solid #2E5824;
     border-radius: 5px;
     font-size: 14px;
+    background-color: #FFFDEA !important; /* Soft Beige */
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus,
+input[type="password"]:focus,
+select:focus{
+    border-color: #FFD02A !important; /* Gold */
+    box-shadow: 0px 0px 6px rgba(255, 208, 42, 0.6);
+}
+
+
+select option:hover {
+    background-color: #FFD02A !important;
 }
 
 /* Submit Button */
@@ -74,4 +107,29 @@ input[type="submit"] {
 
 input[type="submit"]:hover {
     background-color: #E6BA28; /* Slightly darker Gold */
+}
+
+/* Message Display Box */
+.message {
+    width: 94%;
+    padding: 12px;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+/* Success Message */
+.success {
+    background-color: #D4EDDA; /* Light Green */
+    color: #155724; /* Dark Green */
+    border: 2px solid #C3E6CB;
+}
+
+/* Error Message */
+.error {
+    background-color: #F8D7DA; /* Light Red */
+    color: #721C24; /* Dark Red */
+    border: 2px solid #F5C6CB;
 }
