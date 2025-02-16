@@ -1,0 +1,94 @@
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+/* General Styles */
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #367A2F; /* Dark Green */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+}
+
+/* Table Container */
+.table-container {
+    background: #D0EDA2; /* Light Green */
+    padding: 30px;
+    border-radius: 5px;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.15);
+    width: 90%;
+    text-align: center;
+    margin: 40px !important;
+}
+
+/* Title */
+.title {
+    font-size: 40px;
+    font-weight: 600;
+    color: #2E5824; /* Deep Green */
+    margin-bottom: 20px;
+}
+
+/* Styled Table */
+.styled-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+    font-size: 16px;
+    text-align: left;
+    border-radius: 7px;
+    overflow: hidden;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    background-color: #FFFDEA; /* Soft Beige */
+}
+
+/* Table Header */
+.styled-table thead tr {
+    background-color: #FFD02A; /* Gold */
+    color: #2E5824; /* Deep Green */
+    font-weight: bold;
+}
+
+/* Table Rows */
+.styled-table tbody tr {
+    border-bottom: 1px solid #ddd;
+    transition: 0.3s;
+}
+
+.styled-table tbody tr:nth-of-type(even) {
+    background-color: #f9f9f9;
+}
+
+.styled-table tbody tr:hover {
+    background-color: #D0EDA2; /* Slightly darker Gold */
+    color: black;
+}
+
+/* Table Cells */
+.styled-table th, .styled-table td {
+    padding: 12px;
+    border-right: 1px solid #ddd;
+}
+
+.styled-table th:last-child, .styled-table td:last-child {
+    border-right: none;
+}
+
+/* Edit Button */
+.btn-edit {
+    display: inline-block;
+    padding: 8px 12px;
+    background-color: #FFD02A; /* Gold */
+    color: #2E5824; /* Deep Green */
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.btn-edit:hover {
+    background-color: #E6BA28; /* Slightly darker Gold */
+    color: white;
+}
