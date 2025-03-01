@@ -1,0 +1,326 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+}
+
+body {
+    display: flex;
+    height: 100vh;
+    background: #f4f4f4;
+}
+
+/* Sidebar (Left) */
+.sidebar {
+    width: 20%;
+    height: 100vh;
+    background-color: #8b0000;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    position: fixed;
+}
+
+.sidebar-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 30px;
+}
+
+.sidebar-header img {
+    width: 50px;
+}
+
+.sidebar-header h2 {
+    font-size: 25px;
+    font-weight: 600;
+}
+
+.nav-links {
+    list-style: none;
+    padding: 0;
+}
+
+.nav-links li {
+    margin: 15px 0;
+    position: relative;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: white;
+    font-size: 16px;
+    padding: 12px 15px;
+    display: block;
+    border-radius: 5px;
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+.nav-links a:hover,
+.nav-links .active {
+    background: #FFD700;
+    color: black;
+}
+
+/* Keep hover effect on parent dropdown link */
+.nav-links .dropdown:hover > a {
+    background: #FFD700;
+    color: black;
+}
+
+/* Dropdown Menu */
+.dropdown {
+    position: relative;
+    display: block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    left: 98%;  /* Aligns dropdown to the right */
+    top: 0;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    transition: 0.3s;
+}
+
+.dropdown-content a:hover {
+    background-color: #ddd;
+}
+
+/* Main Content (Right) */
+.main-content {
+    width: 100%;
+    margin-left: 20%;
+    padding: 0px;
+    background: white;
+    overflow-y: auto;
+}
+
+.table-container {
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.15);
+    width: 95%;
+    text-align: center;
+    margin: 40px auto;
+}
+
+.title {
+    font-size: 35px;
+    font-weight: 600;
+    color: #8B0000; 
+    margin-bottom: 25px;
+    margin-top: 70px;
+}
+
+.styled-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 16px;
+    text-align: left;
+    border-radius: 5px;
+    overflow: hidden;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    background-color: #ffffff; 
+}
+
+.styled-table thead tr {
+    background-color: #FFD700;
+    color: #8B0000; 
+    font-weight: bold;
+    text-align: center;
+}
+
+.styled-table tbody tr {
+    border-bottom: 1px solid #ddd;
+    transition: all 0.3s ease-in-out;
+}
+
+.styled-table tbody tr:nth-of-type(even) {
+    background-color: #FFF2CC; 
+}
+
+
+/*
+.styled-table tbody tr:hover {
+    background-color: #FFD700; 
+    color: #8B0000;
+}
+*/
+
+/* Table Cells */
+.styled-table th, .styled-table td {
+    padding: 12px;
+    border-right: 1px solid #ddd;
+    text-align: center;
+}
+
+.styled-table th:last-child, .styled-table td:last-child {
+    border-right: none;
+}
+
+.btn-edit {
+    display: inline-block;
+    padding: 8px 14px;
+    color: #A00000;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: all 0.3s ease-in-out;
+}
+
+.btn-edit:hover {
+    color: #FFD700; 
+}
+
+/* DataTable Search, Entries Dropdown & Pagination */
+.dataTables_wrapper {
+    font-size: 16px;
+}
+
+/* Search Bar */
+.dataTables_filter {
+    float: right;
+    margin-bottom: 15px;
+}
+
+.dataTables_filter input {
+    padding: 8px;
+    border: 2px solid #8B0000; 
+    border-radius: 5px;
+    font-size: 14px;
+    background: #FFF5F5; 
+    outline: none;
+}
+
+/* Entries Dropdown */
+.dataTables_length {
+    float: left;
+    margin-bottom: 15px;
+}
+
+.dataTables_length select {
+    padding: 5px;
+    border: 2px solid #8B0000;
+    border-radius: 5px;
+    background: #FFF5F5;
+    font-size: 14px;
+    outline: none;
+}
+
+/* Pagination */
+.dataTables_paginate {
+    margin-top: 20px;
+}
+
+.dataTables_paginate .paginate_button {
+    display: inline-block;
+    padding: 8px 12px;
+    margin: 2px;
+    border-radius: 5px;
+    color: white !important;
+    text-decoration: none;
+    transition: all 0.3s ease-in-out;
+    border: none;
+}
+
+.dataTables_paginate .paginate_button:hover {
+    background-color: #FFD700; 
+}
+
+.dataTables_paginate .paginate_button.current {
+    background-color: #FFD700; 
+    color: #8B0000 !important; 
+}
+
+.back-btn {
+    width: auto;
+    padding: 12px;
+    display: inline-block;
+    padding: 10px 20px;
+    background: #8B0000; 
+    color: white;
+    text-decoration: none;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    transition: all 0.3s ease-in-out;
+    margin-top: 10px;
+    cursor: pointer;
+    font-weight: 600;
+    float: left;
+}
+
+.back-btn:hover {
+    background-color: #A00000;
+}
+
+.add-btn {
+    width: auto;
+    padding: 12px;
+    display: inline-block;
+    padding: 10px 20px;
+    background: #FFD700; 
+    color: #8B0000;
+    text-decoration: none;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    transition: all 0.3s ease-in-out;
+    margin-top: 10px;
+    cursor: pointer;
+    font-weight: 600;
+    float: right;
+}
+
+.add-btn:hover {
+    background-color: #E6C200;
+}
+
+
+/* Responsive Table */
+@media screen and (max-width: 768px) {
+    .table-container {
+        width: 100%;
+        padding: 20px;
+    }
+    
+    .title {
+        font-size: 28px;
+    }
+
+    .styled-table th, .styled-table td {
+        padding: 10px;
+        font-size: 14px;
+    }
+
+    .dataTables_filter, .dataTables_length {
+        float: none;
+        text-align: center;
+        margin-bottom: 10px;
+    }
+
+    .dataTables_paginate {
+        text-align: center;
+    }
+}

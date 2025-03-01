@@ -1,0 +1,116 @@
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background: url('../images/background.jfif') no-repeat center;
+    background-size: 100% auto;
+}
+
+/* Container */
+.container {
+    display: flex;
+    width: auto;
+    height: auto;
+    background: #fff;
+    overflow: hidden;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Left Panel */
+.left-panel {
+    flex: 6;
+    background: url('background.jfif') no-repeat center;
+    background-size: cover;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+
+
+/* Right Panel */
+.right-panel {
+    flex: 4;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    text-align: center;
+}
+
+.right-panel .seal {
+    width: 100px;
+    margin-bottom: 15px;
+}
+
+.right-panel h2 {
+    font-size: 24px;
+    color: #8b0000;
+    margin-bottom: 10px;
+}
+
+.right-panel p {
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 20px;
+}
+
+/* Buttons */
+.btn {
+    width: 80%;
+    max-width: 250px;
+    padding: 12px;
+    margin: 10px 0;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+    text-decoration: none;
+    display: block;
+}
+
+.btn.student {
+    background: #007bff;
+    color: white;
+}
+
+.btn.student:hover {
+    background: #0056b3;
+}
+
+.btn.faculty {
+    background: #dc3545;
+    color: white;
+}
+
+.btn.faculty:hover {
+    background: #a71d2a;
+}
+
+/* Terms and Conditions */
+.terms {
+    font-size: 12px;
+    color: #666;
+    margin-top: 15px;
+}
+
+.terms a {
+    color: #8b0000;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.terms a:hover {
+    text-decoration: underline;
+}
