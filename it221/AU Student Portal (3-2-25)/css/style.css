@@ -1,0 +1,126 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+}
+
+form {
+    background: #ffffff; 
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.15);
+    width: 400px;
+    text-align: center;
+    margin: 30px auto;
+}
+
+h1 {
+    margin-bottom: 20px;
+    color: #002366; 
+    font-weight: 600;
+    text-align: center;
+}
+
+label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #333;
+    text-align: left;
+}
+
+input[type="text"],
+input[type="password"],
+input[type="number"] {
+    width: 94%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 2px solid #002366;
+    border-radius: 5px;
+    font-size: 14px;
+    outline: none;
+    transition: all 0.3s ease-in-out;
+    color: #333;
+}
+
+select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 2px solid #002366;
+    border-radius: 5px;
+    font-size: 14px;
+    outline: none;
+    transition: all 0.3s ease-in-out;
+    color: #333;
+}
+
+input:focus,
+select:focus {
+    border-color: #FFD700; 
+    box-shadow: 0px 0px 6px rgba(255, 215, 0, 0.6);
+}
+
+input[type="submit"] {
+    width: 100%;
+    padding: 12px;
+    background-color: #002366; 
+    border: none;
+    color: white; 
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+
+input[type="submit"]:hover {
+    background-color: #01389e;
+}
+
+.back-btn {
+    width: 90%;
+    padding: 12px;
+    display: inline-block;
+    padding: 10px 20px;
+    background: #8B0000; 
+    color: white;
+    text-decoration: none;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: all 0.3s ease-in-out;
+    margin-top: 10px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.back-btn:hover {
+    background-color: #A00000;
+}
+
+.message {
+    width: 94%;
+    padding: 12px;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+.success {
+    background-color: #D4EDDA; 
+    color: #155724; 
+    border: 2px solid #C3E6CB;
+}
+
+.error {
+    background-color: #F8D7DA; 
+    color: #721C24; 
+    border: 2px solid #F5C6CB;
+}
