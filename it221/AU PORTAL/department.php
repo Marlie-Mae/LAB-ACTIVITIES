@@ -221,10 +221,10 @@
                     <input type="hidden" id="modal_status" value="<?php echo $modalOpen ? 'open' : 'closed'; ?>">
 
                     <label for="department_code">Department Code</label>
-                    <input type="text" name="department_code" placeholder="department code" required> <br>
+                    <input type="text" name="department_code" placeholder="Department code" required> <br>
 
                     <label for="department_name">Department Name</label>
-                    <input type="text" name="department_name" placeholder="department name" required> <br>
+                    <input type="text" name="department_name" placeholder="Department name" required> <br>
 
                     <input type="submit" name="add_department" value="Insert">
                 </form>
