@@ -109,14 +109,17 @@
     </ul>
 </nav>
 
-<!-- Hamburger Icon for Mobile -->
-<div class="hamburger" onclick="toggleSidebar()">&#9776;</div>
 
 <!-- Main Content -->
 <section class="main-content">
-    <div class="top-nav">
-        <img src="images/au_logo.png" alt="Arellano University Logo" class="brand">
-        <h2>Arellano University</h2>
+    <div class="top-con">
+        <!-- Hamburger Icon for Mobile -->
+        <div class="hamburger" onclick="toggleSidebar()">&#9776;</div>
+
+        <div class="top-nav">
+            <img src="images/au_logo.png" alt="Arellano University Logo" class="brand">
+            <h2>Arellano University</h2>
+        </div>
     </div>
 
     <div class="table-container">
