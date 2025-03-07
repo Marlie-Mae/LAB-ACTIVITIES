@@ -20,11 +20,11 @@
 
             $check_department_code = mysqli_query($connection, "SELECT * FROM tbl_department WHERE department_code = '$department_code'");
             if (mysqli_num_rows($check_department_code) > 0) {
-                $display = "<div class='message error'>Department Code already exists.</div>";
+                $display = "<div class='message error'>Department code already exists.</div>";
                 $modalOpen = true;
             } else {
                 if (mysqli_query($connection, "INSERT INTO tbl_department (department_code, department_name) VALUES ('$department_code', '$department_name')")) {
-                    header("Location: department.php?success=department added successfully");
+                    header("Location: department.php?success=Department added successfully");
                     exit();
                 } else {
                     $display = "<div class='message error'>Failed to add department.</div>";
@@ -40,7 +40,7 @@
             // Check if department exists before updating
             $check_department = mysqli_query($connection, "SELECT * FROM tbl_department WHERE department_code = '$edit_code'");
             if (mysqli_num_rows($check_department) == 0) {
-                $display = "<div class='message error'>department Code does not exist.</div>";
+                $display = "<div class='message error'>Fepartment Code does not exist.</div>";
             } else {
                 $update_query = "UPDATE tbl_department SET department_name = '$edit_name' WHERE department_code = '$edit_code'";
                 if (mysqli_query($connection, $update_query)) {
