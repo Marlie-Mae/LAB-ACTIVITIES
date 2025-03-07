@@ -14,75 +14,74 @@
     $modalOpen = false;
 
     if ($_SERVER['REQUEST_METHOD'] == "POST") {
-        // ADD FACULTY FUNCTION
-        if (isset($_POST['add_faculty'])) {
-            $faculty_code = mysqli_real_escape_string($connection, $_POST['faculty_code']);
-            $faculty_name = mysqli_real_escape_string($connection, $_POST['faculty_name']);
-            $department_code = mysqli_real_escape_string($connection, $_POST['department_code']);
+        // ADD STUDENT FUNCTION
+        if (isset($_POST['add_student'])) {
+            $student_no = mysqli_real_escape_string($connection, $_POST['student_no']);
+            $first_name = mysqli_real_escape_string($connection, $_POST['first_name']);
+            $last_name = mysqli_real_escape_string($connection, $_POST['last_name']);
+            $middle_name = mysqli_real_escape_string($connection, $_POST['middle_name']);
+            $course_code = mysqli_real_escape_string($connection, $_POST['course_code']);
+            $year_level = mysqli_real_escape_string($connection, $_POST['year_level']);
             $password = mysqli_real_escape_string($connection, $_POST['password']);
             $hashed_password = md5($password);
     
-            $check_faculty = mysqli_query($connection, "SELECT * FROM tbl_faculty WHERE faculty_code = '$faculty_code'");
-            if (mysqli_num_rows($check_faculty) > 0) {
-                $display = "<div class='message error'>Faculty Code already exists.</div>";
+            $check_student = mysqli_query($connection, "SELECT * FROM tbl_student_info WHERE student_no = '$student_no'");
+            if (mysqli_num_rows($check_student) > 0) {
+                $display = "<div class='message error'>Student No. already exists.</div>";
                 $modalOpen = true;
             } else {
-                if (mysqli_query($connection, "INSERT INTO tbl_faculty (faculty_code, faculty_name, department_code, password) VALUES ('$faculty_code', '$faculty_name', '$department_code', '$hashed_password')")) {
-                    header("Location: faculty.php?success=Faculty added successfully");
+                $insert_query = "INSERT INTO tbl_student_info (student_no, first_name, last_name, middle_name, course_code, year_level, password) 
+                                 VALUES ('$student_no', '$first_name', '$last_name', '$middle_name', '$course_code', '$year_level', '$hashed_password')";
+                
+                if (mysqli_query($connection, $insert_query)) {
+                    header("Location: student.php?success=Student added successfully");
                     exit();
                 } else {
-                    $display = "<div class='message error'>Failed to add faculty.</div>";
+                    $display = "<div class='message error'>Failed to add student.</div>";
                     $modalOpen = true;
                 }
             }
         }
     
-        // EDIT FACULTY FUNCTION
-        if (isset($_POST['edit_faculty'])) {
-            $edit_code = mysqli_real_escape_string($connection, $_POST['edit_code']);
-            $edit_name = mysqli_real_escape_string($connection, $_POST['edit_name']);
-            $edit_department_code = mysqli_real_escape_string($connection, $_POST['edit_department_code']);
+        // EDIT STUDENT FUNCTION
+        if (isset($_POST['edit_student'])) {
+            $edit_student_no = mysqli_real_escape_string($connection, $_POST['edit_student_no']);
+            $edit_first_name = mysqli_real_escape_string($connection, $_POST['edit_first_name']);
+            $edit_last_name = mysqli_real_escape_string($connection, $_POST['edit_last_name']);
+            $edit_middle_name = mysqli_real_escape_string($connection, $_POST['edit_middle_name']);
+            $edit_course_code = mysqli_real_escape_string($connection, $_POST['edit_course_code']);
+            $edit_year_level = mysqli_real_escape_string($connection, $_POST['edit_year_level']);
     
-            // Debugging: Check if data is received
-            if (empty($edit_code) || empty($edit_name) || empty($edit_department_code)) {
-                die("<div class='message error'>Error: Missing data. Please fill all fields.</div>");
-            }
+            $update_query = "UPDATE tbl_student_info 
+                             SET first_name = '$edit_first_name', last_name = '$edit_last_name', 
+                                 middle_name = '$edit_middle_name', course_code = '$edit_course_code', 
+                                 year_level = '$edit_year_level' 
+                             WHERE student_no = '$edit_student_no'";
     
-            // Check if faculty exists
-            $check_faculty = mysqli_query($connection, "SELECT * FROM tbl_faculty WHERE faculty_code = '$edit_code'");
-            if (mysqli_num_rows($check_faculty) == 0) {
-                $display = "<div class='message error'>Faculty code does not exist.</div>";
+            if (mysqli_query($connection, $update_query)) {
+                header("Location: student.php?success=Student updated successfully");
+                exit();
             } else {
-                // Update faculty details
-                $update_query = "UPDATE tbl_faculty 
-                                 SET faculty_name = '$edit_name', department_code = '$edit_department_code' 
-                                 WHERE faculty_code = '$edit_code'";
-    
-                if (mysqli_query($connection, $update_query)) {
-                    header("Location: faculty.php?success=Faculty updated successfully");
-                    exit();
-                } else {
-                    die("<div class='message error'>Failed to update faculty: " . mysqli_error($connection) . "</div>");
-                }
+                $display = "<div class='message error'>Failed to update student.</div>";
             }
         }
     }
     
-
-    // Handle department Deletion
+    // Handle Student Deletion
     if (isset($_GET["delete"])) {
-        $faculty_code = mysqli_real_escape_string($connection, $_GET["delete"]);
-        $delete_query = "DELETE FROM tbl_faculty WHERE faculty_code = '$faculty_code'";
+        $student_no = mysqli_real_escape_string($connection, $_GET["delete"]);
+        $delete_query = "DELETE FROM tbl_student_info WHERE student_no = '$student_no'";
 
         if (mysqli_query($connection, $delete_query)) {
-            header("Location: faculty.php?success=Faculty deleted successfully");
+            header("Location: student.php?success=Student deleted successfully");
             exit();
         } else {
-            header("Location: faculty.php?error=Failed to delete faculty");
+            header("Location: student.php?error=Failed to delete student");
             exit();
         }
     }
 ?>
+
 
 <!DOCTYPE html>
 <html>
@@ -169,8 +168,8 @@
                         <td><?php echo $data['year_level']; ?></td>
                         <td>
                             <div class="action-buttons">
-                                <button class="btn-edit" onclick="openEditModal('<?php echo $data['faculty_code']; ?>', '<?php echo $data['faculty_name']; ?>', '<?php echo $data['department_code']; ?>')">Edit</button>
-                                <a href="faculty.php?delete=<?php echo $data['student_no']; ?>" class="btn-delete" onclick="return confirm('Are you sure you want to delete this student?');">Delete</a>
+                                <button class="btn-edit" onclick="openEditModal('<?php echo $data['student_no']; ?>', '<?php echo $data['first_name']; ?>', '<?php echo $data['last_name']; ?>', '<?php echo $data['middle_name']; ?>', '<?php echo $data['course_code']; ?>', '<?php echo $data['year_level']; ?>')">Edit</button>
+                                <a href="student.php?delete=<?php echo $data['student_no']; ?>" class="btn-delete" onclick="return confirm('Are you sure you want to delete this student?');">Delete</a>
                             </div>
                         </td>
                     </tr>
@@ -196,119 +195,110 @@
             }
 
             function openModal() {
-                document.getElementById("facultyModal").style.display = "block";
+                document.getElementById("studentModal").style.display = "block";
             }
 
             function closeModal() {
-                document.getElementById("facultyModal").style.display = "none";
+                document.getElementById("studentModal").style.display = "none";
             }
 
-            function openEditModal(code, name, department) {
-                document.getElementById("edit_code").value = code;
-                document.getElementById("edit_name").value = name;
-                document.getElementById("edit_department_code").value = department;
-                document.getElementById("editfacultyModal").style.display = "block";
+            function openEditModal(student_no, first_name, last_name, middle_name, course_code, year_level) {
+                document.getElementById("edit_student_no").value = student_no;
+                document.getElementById("edit_first_name").value = first_name;
+                document.getElementById("edit_last_name").value = last_name;
+                document.getElementById("edit_middle_name").value = middle_name;
+                document.getElementById("edit_course_code").value = course_code;
+                document.getElementById("edit_year_level").value = year_level;
+                document.getElementById("editStudentModal").style.display = "block";
             }
 
             function closeEditModal() {
-                document.getElementById("editfacultyModal").style.display = "none";
+                document.getElementById("editStudentModal").style.display = "none";
             }
         </script>
 
-        <!-- Add Modal -->
-        <div id="facultyModal" class="modal">
+        <!-- Add Student Modal -->
+        <div id="studentModal" class="modal">
             <div class="modal-content">
                 <span class="close" onclick="closeModal()">&times;</span>
-                <h1>Add New Faculty</h1>
+                <h1>Add New Student</h1>
 
                 <?php if (!empty($display)) echo $display; ?>
 
                 <form action="" method="POST">
                     <input type="hidden" id="modal_status" value="<?php echo $modalOpen ? 'open' : 'closed'; ?>">
+
                     <label for="student_no">Student No.:</label>
-                    <input type="text" name="student_no" placeholder="Student no." required> <br>
+                    <input type="text" name="student_no" placeholder="Student No." required> <br>
 
-                    <label for="l_name">Last Name:</label>
-                    <input type="text" name="l_name" placeholder="Last name" required> <br>
+                    <label for="last_name">Last Name:</label>
+                    <input type="text" name="last_name" placeholder="Last Name" required> <br>
 
-                    <label for="f_name">First Name:</label>
-                    <input type="text" name="f_name" placeholder="First name" required> <br>
+                    <label for="first_name">First Name:</label>
+                    <input type="text" name="first_name" placeholder="First Name" required> <br>
 
-                    <label for="m_name">Middle Name:</label>
-                    <input type="text" name="m_name" placeholder="Middle name"> <br>
+                    <label for="middle_name">Middle Name:</label>
+                    <input type="text" name="middle_name" placeholder="Middle Name"> <br>
 
                     <label for="course_code">Course:</label>
-                    <select name="course_code" id="">
+                    <select name="course_code">
                         <option value="" disabled selected>Select a course</option>
                         <?php
                             $query = mysqli_query($connection, "SELECT * FROM tbl_course"); 
-                            $rows = mysqli_num_rows($query);
-                            if ($rows > 0) {
-                                while ($data = mysqli_fetch_assoc($query)) {
-                        ?>
-                                    <option value="<?php echo $data['course_code']; ?>">
-                                        <?php echo $data['course_code']; ?>
-                                    </option>
-                        <?php  
-                                }
+                            while ($data = mysqli_fetch_assoc($query)) {
+                                echo "<option value='{$data['course_code']}'>{$data['course_code']}</option>";
                             }
                         ?>
-                    </select>
-                    <br>
+                    </select> <br>
 
                     <label for="year_level">Year Level:</label>
-                    <input type="number" name="year_level" placeholder="Year level" min="1" max="4" required> <br>
+                    <input type="number" name="year_level" placeholder="Year Level" min="1" max="4" required> <br>
 
                     <label for="password">Password:</label>
                     <input type="password" name="password" placeholder="Password" required> <br>
-                    
-                    <input type="submit" name="add_faculty" value="Insert">
+
+                    <input type="submit" name="add_student" value="Insert">
                 </form>
             </div>
         </div>
 
-        <!-- Edit Modal -->
-        <div id="editfacultyModal" class="modal">
+        <!-- Edit Student Modal -->
+        <div id="editStudentModal" class="modal">
             <div class="modal-content">
                 <span class="close" onclick="closeEditModal()">&times;</span>
-                <h1>Edit Faculty</h1>
+                <h1>Edit Student</h1>
                 <form method="POST">
-                    <input type="hidden" name="edit_code" id="edit_code">
-                    
-                    <label for="l_name">Last Name:</label>
-                    <input type="text" name="l_name" placeholder="Last name" required value="<?php if(isset($data['last_name'])) {echo $data["last_name"];} ?>"> <br>
+                    <input type="hidden" name="edit_student_no" id="edit_student_no">
 
-                    <label for="f_name">First Name:</label>
-                    <input type="text" name="f_name" placeholder="First name" required value="<?php if(isset($data['first_name'])) {echo $data["first_name"];} ?>"> <br>
+                    <label for="edit_last_name">Last Name:</label>
+                    <input type="text" name="edit_last_name" id="edit_last_name" placeholder="Last Name" required> <br>
 
-                    <label for="m_name">Middle Name:</label>
-                    <input type="text" name="m_name" placeholder="Middle name" required value="<?php if(isset($data['middle_name'])) {echo $data["middle_name"];} ?>"> <br>
+                    <label for="edit_first_name">First Name:</label>
+                    <input type="text" name="edit_first_name" id="edit_first_name" placeholder="First Name" required> <br>
 
-                    <label for="course_code">Course:</label>
-                    <select name="course_code" id="">
+                    <label for="edit_middle_name">Middle Name:</label>
+                    <input type="text" name="edit_middle_name" id="edit_middle_name" placeholder="Middle Name"> <br>
+
+                    <label for="edit_course_code">Course:</label>
+                    <select name="edit_course_code" id="edit_course_code">
                         <option value="" disabled selected>Select a course</option>
                         <?php
-                        $query = mysqli_query($connection, "SELECT * FROM tbl_course"); 
-                        $rows = mysqli_num_rows($query);
-                        while ($course = mysqli_fetch_assoc($query)) {
+                            $query = mysqli_query($connection, "SELECT * FROM tbl_course"); 
+                            while ($course = mysqli_fetch_assoc($query)) {
+                                echo "<option value='{$course['course_code']}'>{$course['course_code']}</option>";
+                            }
                         ?>
-                        <option value="<?php echo $course['course_code']; ?>" <?php if($course_code == $course["course_code"]) {echo "selected"; }?>>
+                    </select> <br>
 
-                        <?php echo $course['course_code']; ?> </option>
-                        <?php } ?>
-                        ?>
-                    </select>
-                    <br>
+                    <label for="edit_year_level">Year Level:</label>
+                    <input type="number" name="edit_year_level" id="edit_year_level" placeholder="Year Level" min="1" max="4" required> <br>
 
-                    <label for="year_level">Year Level:</label>
-                    <input type="number" name="year_level" placeholder="Year level" min="1" max="4" required value="<?php if(isset($data['year_level'])) {echo $data["year_level"];} ?>"> <br>
-                    
-                    
-                    <input type="submit" name="edit_faculty" value="Update">
+                    <input type="submit" name="edit_student" value="Update">
                 </form>
             </div>
         </div>
 
+        
         <?php } ?>
     </div>
     </section>
