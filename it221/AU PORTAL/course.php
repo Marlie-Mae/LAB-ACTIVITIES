@@ -40,7 +40,7 @@
             // Check if course exists before updating
             $check_course = mysqli_query($connection, "SELECT * FROM tbl_course WHERE course_code = '$edit_code'");
             if (mysqli_num_rows($check_course) == 0) {
-                $display = "<div class='message error'>Course Code does not exist.</div>";
+                $display = "<div class='message error'>Course code does not exist.</div>";
             } else {
                 $update_query = "UPDATE tbl_course SET course_description = '$edit_name' WHERE course_code = '$edit_code'";
                 if (mysqli_query($connection, $update_query)) {
@@ -220,10 +220,10 @@
                 <form action="" method="POST">
                     <input type="hidden" id="modal_status" value="<?php echo $modalOpen ? 'open' : 'closed'; ?>">
 
-                    <label for="course_code">Course Code</label>
+                    <label for="course_code">Course Code:</label>
                     <input type="text" name="course_code" placeholder="Course code" required> <br>
 
-                    <label for="course_name">Course Name</label>
+                    <label for="course_name">Course Name:</label>
                     <input type="text" name="course_name" placeholder="Course name" required> <br>
 
                     <input type="submit" name="add_course" value="Insert">
@@ -238,7 +238,7 @@
                 <h1>Edit Course</h1>
                 <form method="POST">
                     <input type="hidden" name="edit_code" id="edit_code">
-                    <label>Course Name</label>
+                    <label>Course Name:</label>
                     <input type="text" name="edit_name" id="edit_name" required>
                     <input type="submit" name="edit_course" value="Update">
                 </form>
