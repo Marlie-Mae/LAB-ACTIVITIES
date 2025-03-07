@@ -20,7 +20,7 @@
 
             $check_course_code = mysqli_query($connection, "SELECT * FROM tbl_course WHERE course_code = '$course_code'");
             if (mysqli_num_rows($check_course_code) > 0) {
-                $display = "<div class='message error'>Course Code already exists.</div>";
+                $display = "<div class='message error'>Course code already exists.</div>";
                 $modalOpen = true;
             } else {
                 if (mysqli_query($connection, "INSERT INTO tbl_course (course_code, course_description) VALUES ('$course_code', '$course_name')")) {
