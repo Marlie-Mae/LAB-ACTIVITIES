@@ -109,12 +109,12 @@
         <ul class="nav-links">
             <li><a href="admin-profile.php">Profile</a></li>
             <li><a href="users.php">Users</a></li>
-            <li><a href="school-year.php">School Year</a></li>
+            <li><a href="school-year.php" class="active">School Year</a></li>
             <li><a href="department.php">Department</a></li>
             <li><a href="course.php">Course</a></li>
             <li><a href="subject.php">Subject</a></li>
             <li><a href="student.php">Student</a></li>
-            <li><a href="faculty.php" class="active">Faculty</a></li>
+            <li><a href="faculty.php">Faculty</a></li>
             <li><a href="logout.php">Logout</a></li>
         </ul>
     </nav>
