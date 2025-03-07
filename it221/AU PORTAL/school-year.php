@@ -223,19 +223,19 @@
                     <input type="hidden" id="modal_status" value="<?php echo $modalOpen ? 'open' : 'closed'; ?>">
 
                     <label for="school_year_code">School Year Code:</label>
-                    <input type="text" name="school_year_code" placeholder="School year code" required value="<?php echo isset($_POST['school_year_code']) ? $_POST['school_year_code'] : ''; ?>"> <br>
+                    <input type="text" name="school_year_code" placeholder="School year code" required> <br>
 
                     <label for="school_year">School Year:</label>
-                    <input type="text" name="school_year" placeholder="School year" required value="<?php echo isset($_POST['school_year']) ? $_POST['school_year'] : ''; ?>"> <br>
+                    <input type="text" name="school_year" placeholder="School year" required> <br>
 
                     <label for="semester">Semester:</label>
-                    <input type="text" name="semester" placeholder="Semester" required value="<?php echo isset($_POST['semester']) ? $_POST['semester'] : ''; ?>"> <br>
+                    <input type="text" name="semester" placeholder="Semester" required> <br>
 
                     <label for="status">Status:</label>
                     <select name="status" required>
                         <option value="" disabled selected>Select Status</option>
-                        <option value="1" <?php echo (isset($_POST['status']) && $_POST['status'] == '1') ? "selected" : ""; ?>>Active</option>
-                        <option value="0" <?php echo (isset($_POST['status']) && $_POST['status'] == '0') ? "selected" : ""; ?>>Inactive</option>
+                        <option value="1">Active</option>
+                        <option value="0">Inactive</option>
                     </select> <br>
 
                     <input type="submit" name="add_school_year" value="Insert">
@@ -249,16 +249,21 @@
                 <span class="close" onclick="closeEditModal()">&times;</span>
                 <h1>Edit School Year</h1>
                 <form method="POST">
+                    <!-- Hidden field for school year code -->
                     <input type="hidden" name="edit_code" id="edit_code">
+
                     <label>School Year:</label>
                     <input type="text" name="edit_school_year_value" id="edit_school_year" required>
+
                     <label>Semester:</label>
                     <input type="text" name="edit_semester" id="edit_semester" required>
+
                     <label>Status:</label>
                     <select name="edit_status" id="edit_status">
                         <option value="1">Active</option>
                         <option value="0">Inactive</option>
                     </select>
+
                     <input type="submit" name="edit_school_year" value="Update">
                 </form>
             </div>
