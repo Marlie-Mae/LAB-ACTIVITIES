@@ -24,7 +24,7 @@
     
             $check_faculty = mysqli_query($connection, "SELECT * FROM tbl_faculty WHERE faculty_code = '$faculty_code'");
             if (mysqli_num_rows($check_faculty) > 0) {
-                $display = "<div class='message error'>Faculty Code already exists.</div>";
+                $display = "<div class='message error'>Faculty code already exists.</div>";
                 $modalOpen = true;
             } else {
                 if (mysqli_query($connection, "INSERT INTO tbl_faculty (faculty_code, faculty_name, department_code, password) VALUES ('$faculty_code', '$faculty_name', '$department_code', '$hashed_password')")) {
@@ -289,7 +289,6 @@
                 </form>
             </div>
         </div>
-        
 
     <?php } ?>
     </div>
