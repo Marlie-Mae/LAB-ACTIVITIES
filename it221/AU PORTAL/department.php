@@ -40,11 +40,11 @@
             // Check if department exists before updating
             $check_department = mysqli_query($connection, "SELECT * FROM tbl_department WHERE department_code = '$edit_code'");
             if (mysqli_num_rows($check_department) == 0) {
-                $display = "<div class='message error'>Fepartment Code does not exist.</div>";
+                $display = "<div class='message error'>Department code does not exist.</div>";
             } else {
                 $update_query = "UPDATE tbl_department SET department_name = '$edit_name' WHERE department_code = '$edit_code'";
                 if (mysqli_query($connection, $update_query)) {
-                    header("Location: department.php?success=department updated successfully");
+                    header("Location: department.php?success=Department updated successfully");
                     exit();
                 } else {
                     $display = "<div class='message error'>Failed to update department: " . mysqli_error($connection) . "</div>";
@@ -220,10 +220,10 @@
                 <form action="" method="POST">
                     <input type="hidden" id="modal_status" value="<?php echo $modalOpen ? 'open' : 'closed'; ?>">
 
-                    <label for="department_code">Department Code</label>
+                    <label for="department_code">Department Code:</label>
                     <input type="text" name="department_code" placeholder="Department code" required> <br>
 
-                    <label for="department_name">Department Name</label>
+                    <label for="department_name">Department Name:</label>
                     <input type="text" name="department_name" placeholder="Department name" required> <br>
 
                     <input type="submit" name="add_department" value="Insert">
@@ -238,7 +238,7 @@
                 <h1>Edit Department</h1>
                 <form method="POST">
                     <input type="hidden" name="edit_code" id="edit_code">
-                    <label>Department Name</label>
+                    <label>Department Name:</label>
                     <input type="text" name="edit_name" id="edit_name" required>
                     <input type="submit" name="edit_department" value="Update">
                 </form>
