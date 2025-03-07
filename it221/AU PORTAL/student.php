@@ -27,7 +27,7 @@
     
             $check_student = mysqli_query($connection, "SELECT * FROM tbl_student_info WHERE student_no = '$student_no'");
             if (mysqli_num_rows($check_student) > 0) {
-                $display = "<div class='message error'>Student No. already exists.</div>";
+                $display = "<div class='message error'>Student no. already exists.</div>";
                 $modalOpen = true;
             } else {
                 $insert_query = "INSERT INTO tbl_student_info (student_no, first_name, last_name, middle_name, course_code, year_level, password) 
@@ -91,7 +91,7 @@
     <title>Student Table</title>
     <link type="image/png" rel="icon" href="images/au_logo.png">
     <link rel="stylesheet" href="css/table.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
 </head>
 <body>
     <!-- Sidebar Navigation -->
@@ -178,10 +178,10 @@
             </table>
 
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-        <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
+        <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
         <script>
             $(document).ready(function() {
-                $('#faculty').DataTable();
+                $('#student_info').DataTable();
 
                 // Check if modal should be open
                 if (document.getElementById("modal_status").value === "open") {
