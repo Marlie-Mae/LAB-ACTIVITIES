@@ -51,7 +51,7 @@
             // Check if faculty exists
             $check_faculty = mysqli_query($connection, "SELECT * FROM tbl_faculty WHERE faculty_code = '$edit_code'");
             if (mysqli_num_rows($check_faculty) == 0) {
-                $display = "<div class='message error'>Faculty Code does not exist.</div>";
+                $display = "<div class='message error'>Faculty code does not exist.</div>";
             } else {
                 // Update faculty details
                 $update_query = "UPDATE tbl_faculty 
@@ -75,7 +75,7 @@
         $delete_query = "DELETE FROM tbl_faculty WHERE faculty_code = '$faculty_code'";
 
         if (mysqli_query($connection, $delete_query)) {
-            header("Location: faculty.php?success=faculty deleted successfully");
+            header("Location: faculty.php?success=Faculty deleted successfully");
             exit();
         } else {
             header("Location: faculty.php?error=Failed to delete faculty");
