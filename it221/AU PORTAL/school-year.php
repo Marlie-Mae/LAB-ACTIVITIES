@@ -86,7 +86,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>School Year Table</title>
+        <title>AU Portal | School Year</title>
         <link type="image/png" rel="icon" href="images/au_logo.png">
         <link rel="stylesheet" href="css/table.css">
         <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
@@ -234,8 +234,8 @@
                     <label for="status">Status:</label>
                     <select name="status" required>
                         <option value="" disabled selected>Select Status</option>
-                        <option value="1">Active</option>
-                        <option value="0">Inactive</option>
+                        <option value="active">Active</option>
+                        <option value="inactive">Inactive</option>
                     </select> <br>
 
                     <input type="submit" name="add_school_year" value="Insert">
@@ -258,11 +258,13 @@
                     <label>Semester:</label>
                     <input type="text" name="edit_semester" id="edit_semester" required>
 
-                    <label>Status:</label>
-                    <select name="edit_status" id="edit_status">
-                        <option value="1">Active</option>
-                        <option value="0">Inactive</option>
-                    </select>
+                    <label for="edit_status">Status:</label>
+                    <select name="edit_status" id="edit_status" required> <!-- FIXED -->
+                        <option value="" disabled selected>Select Status</option>
+                        <option value="active">Active</option>
+                        <option value="inactive">Inactive</option>
+                    </select> 
+                    <br>
 
                     <input type="submit" name="edit_school_year" value="Update">
                 </form>
