@@ -24,7 +24,7 @@ body {
     position: fixed;
     top: 5px;
     left: 20px;
-    z-index: 1000;
+    z-index: 20;
 }
 
 /* Sidebar */
