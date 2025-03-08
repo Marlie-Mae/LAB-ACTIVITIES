@@ -100,7 +100,7 @@
                     <img src="images/default.jpg" alt="Admin Image">
                 </div>
                 <div class="user-info">
-                    Admin<br><?php echo $row["user_id"]; ?>
+                    <strong>Admin</strong><br><?php echo $row["user_id"]; ?>
                 </div>
             </div>
             <div class="close-icon" onclick="toggleSidebar()">&times;</div>
