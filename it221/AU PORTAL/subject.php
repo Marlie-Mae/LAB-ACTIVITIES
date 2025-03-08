@@ -87,7 +87,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Subject Table</title>
+        <title>AU Portal | Subject</title>
         <link type="image/png" rel="icon" href="images/au_logo.png">
         <link rel="stylesheet" href="css/table.css">
         <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
