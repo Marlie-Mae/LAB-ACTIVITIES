@@ -273,7 +273,7 @@ body {
 }
 
 .btn-delete:hover {
-    background-color: #A00000;
+    background-color: #c00303;
 }
 
 
@@ -289,52 +289,50 @@ body {
 }
 
 .dataTables_filter input {
-    padding: 8px;
-    border: 2px solid #8B0000; 
-    border-radius: 5px;
-    font-size: 14px;
-    background: #FFF5F5; 
-    outline: none;
+    padding: 8px !important;
+    border: 2px solid black !important; 
+    border-radius: 4px !important;
+    font-size: 14px !important;
+    outline: none !important;
 }
 
 /* Entries Dropdown */
 .dataTables_length {
-    float: left;
-    margin-bottom: 15px;
+    float: left !important;
+    margin-bottom: 15px !important;
 }
 
 .dataTables_length select {
-    padding: 5px;
-    border: 2px solid #8B0000;
-    border-radius: 5px;
-    background: #FFF5F5;
-    font-size: 14px;
+    padding: 5px !important;
+    border: 2px solid black !important;
+    border-radius: 4px !important;
+    font-size: 14px !important;
     outline: none;
 }
 
 /* Pagination */
 .dataTables_paginate {
-    margin-top: 20px;
+    margin-top: 20px !important;
 }
 
-.dataTables_wrapper .dataTables_paginate .paginate_button {
-    display: inline-block;
-    padding: 8px 12px;
-    margin: 2px;
-    border-radius: 5px;
+.dataTables_paginate .paginate_button {
+    display: inline-block !important;
+    padding: 8px 12px !important;
+    margin: 2px !important;
+    border-radius: 4px !important;
     color: black !important;
-    text-decoration: none;
-    transition: all 0.3s ease-in-out;
-    border: none;
+    text-decoration: none !important;
+    transition: all 0.3s ease-in-out !important;
+    border: none !important;
 }
 
-.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
-    background-color: white; 
+.dataTables_paginate .paginate_button:hover {
+     
 }
 
-.dataTables_wrapper .dataTables_paginate .paginate_button.current {
-    background-color: #002366; 
-    color: white !important; 
+.dataTables_paginate .paginate_button.current {
+    
+    color: black !important; 
 }
 
 .back-btn {
