@@ -273,7 +273,7 @@
                     <select name="edit_department_code" id="edit_department_code">
                         <option value="" disabled selected>Select a department</option>
                         <?php
-                        include('cn.php'); // Ensure your DB connection is included
+                        include('cn.php'); 
                         $query = mysqli_query($connection, "SELECT * FROM tbl_department"); 
                         while ($department = mysqli_fetch_assoc($query)) {
                         ?>

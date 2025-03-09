@@ -10,7 +10,7 @@
     $query = mysqli_query($connection, "SELECT * FROM tbl_users WHERE user_id = '$user_id'");
     $row = mysqli_fetch_assoc($query);
 
-    $message_display = ""; // Store success or error messages
+    $message_display = ""; 
     $modalOpen = false;
 
     if ($_SERVER['REQUEST_METHOD'] == "POST") {
@@ -199,9 +199,9 @@
             }
 
             function openEditModal(userId, accountType, status) {
-                document.getElementById("edit_user_id").value = userId; // FIXED
-                document.getElementById("edit_account_type").value = accountType; // FIXED
-                document.getElementById("edit_status").value = status; // FIXED
+                document.getElementById("edit_user_id").value = userId; 
+                document.getElementById("edit_account_type").value = accountType; 
+                document.getElementById("edit_status").value = status; 
                 document.getElementById("editUserModal").style.display = "block";
             }
 
@@ -242,7 +242,7 @@
                         <option value="inactive">Inactive</option>
                     </select> <br>
 
-                    <input type="submit" name="add_user" value="Add User">
+                    <input type="submit" name="add_user" value="Insert">
                 </form>
             </div>
         </div>
@@ -254,10 +254,10 @@
                 <h1>Edit User</h1>
 
                 <form method="POST">
-                    <input type="hidden" name="edit_user_id" id="edit_user_id"> <!-- FIXED -->
+                    <input type="hidden" name="edit_user_id" id="edit_user_id"> 
 
                     <label for="edit_account_type">Account Type:</label>
-                    <select name="edit_account_type" id="edit_account_type" required> <!-- FIXED -->
+                    <select name="edit_account_type" id="edit_account_type" required> 
                         <option value="" disabled selected>Select Account Type</option>
                         <option value="admin">Admin</option>
                         <option value="user">User</option>
@@ -265,14 +265,14 @@
                     <br>
 
                     <label for="edit_status">Status:</label>
-                    <select name="edit_status" id="edit_status" required> <!-- FIXED -->
+                    <select name="edit_status" id="edit_status" required> 
                         <option value="" disabled selected>Select Status</option>
                         <option value="active">Active</option>
                         <option value="inactive">Inactive</option>
                     </select> 
                     <br>
 
-                    <input type="submit" name="edit_user" value="Update User">
+                    <input type="submit" name="edit_user" value="Update">
                 </form>
             </div>
         </div>

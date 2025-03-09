@@ -10,7 +10,7 @@
     $query = mysqli_query($connection, "SELECT * FROM tbl_users WHERE user_id = '$user_id'");
     $row = mysqli_fetch_assoc($query);
 
-    $display = ""; // Store messages for success or errors
+    $display = ""; 
     $modalOpen = false;
 
     if ($_SERVER['REQUEST_METHOD'] == "POST") {
