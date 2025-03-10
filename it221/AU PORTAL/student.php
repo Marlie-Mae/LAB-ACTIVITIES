@@ -13,6 +13,8 @@
     $display = ""; 
     $modalOpen = false;
 
+    $successMessage = "";
+
     if ($_SERVER['REQUEST_METHOD'] == "POST") {
         // ADD STUDENT FUNCTION
         if (isset($_POST['add_student'])) {
@@ -34,11 +36,9 @@
                                  VALUES ('$student_no', '$first_name', '$last_name', '$middle_name', '$course_code', '$year_level', '$hashed_password')";
                 
                 if (mysqli_query($connection, $insert_query)) {
-                    header("Location: student.php?success=Student added successfully");
-                    exit();
+                    $successMessage = "Student added successfully!";
                 } else {
-                    $display = "<div class='message error'>Failed to add student.</div>";
-                    $modalOpen = true;
+                    echo "<script>alert('Failed to add student.');</script>";
                 }
             }
         }
@@ -59,10 +59,9 @@
                              WHERE student_no = '$edit_student_no'";
     
             if (mysqli_query($connection, $update_query)) {
-                header("Location: student.php?success=Student updated successfully");
-                exit();
+                $successMessage = "Student updated successfully!";
             } else {
-                $display = "<div class='message error'>Failed to update student.</div>";
+                echo "<script>alert('Failed to update student.');</script>";
             }
         }
     }
@@ -92,8 +91,25 @@
     <link type="image/png" rel="icon" href="images/au_logo.png">
     <link rel="stylesheet" href="css/table.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
+
+    <script>
+        function closeSuccessModal() {
+            document.getElementById("successModal").style.display = "none";
+        }
+    </script>
+
 </head>
 <body>
+
+    <?php if ($successMessage): ?>
+        <div id="successModal" class="success-modal" style="display:block;">
+            <div class="success-modal-content">
+                <p><?php echo $successMessage; ?></p>
+                <button onclick="closeSuccessModal()">OK</button>
+            </div>
+        </div>
+    <?php endif; ?>
+
     <!-- Sidebar Navigation -->
     <nav class="sidebar">
         <div class="sidebar-header">
@@ -169,13 +185,40 @@
                         <td>
                             <div class="action-buttons">
                                 <button class="btn-edit" onclick="openEditModal('<?php echo $data['student_no']; ?>', '<?php echo $data['first_name']; ?>', '<?php echo $data['last_name']; ?>', '<?php echo $data['middle_name']; ?>', '<?php echo $data['course_code']; ?>', '<?php echo $data['year_level']; ?>')">Edit</button>
-                                <a href="student.php?delete=<?php echo $data['student_no']; ?>" class="btn-delete" onclick="return confirm('Are you sure you want to delete this student?');">Delete</a>
+                                <a href="javascript:void(0);" class="btn-delete" onclick="openDeleteModal('<?php echo $data['student_no']; ?>')">Delete</a>
                             </div>
                         </td>
                     </tr>
                     <?php } ?>
                 </tbody>
             </table>
+
+            <!-- Delete Confirmation Modal -->
+            <div id="deleteModal" class="delete-modal">
+                <div class="delete-modal-content">
+                    <h2>Are you sure?</h2>
+                    <p>Do you really want to delete this student? This action cannot be undone.</p>
+                    <input type="hidden" id="delete_student_no">
+                    <button class="btn-confirm" onclick="confirmDelete()">Yes, Delete</button>
+                    <button class="btn-cancel" onclick="closeDeleteModal()">Cancel</button>
+                </div>
+            </div>
+
+            <script>
+                function openDeleteModal(student_no) {
+                    document.getElementById("delete_student_no").value = student_no;
+                    document.getElementById("deleteModal").style.display = "block";
+                }
+
+                function closeDeleteModal() {
+                    document.getElementById("deleteModal").style.display = "none";
+                }
+
+                function confirmDelete() {
+                    var student_no = document.getElementById("delete_student_no").value;
+                    window.location.href = "student.php?delete=" + student_no;
+                }
+            </script>
 
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
