@@ -13,6 +13,8 @@
     $display = ""; // Store messages for success or errors
     $modalOpen = false;
 
+    $successMessage = "";
+
     if ($_SERVER['REQUEST_METHOD'] == "POST") {
         // ADD FACULTY FUNCTION
         if (isset($_POST['add_faculty'])) {
@@ -20,53 +22,52 @@
             $faculty_name = mysqli_real_escape_string($connection, $_POST['faculty_name']);
             $department_code = mysqli_real_escape_string($connection, $_POST['department_code']);
             $password = mysqli_real_escape_string($connection, $_POST['password']);
-            $hashed_password = md5($password);
-    
+            $hashed_password = md5($password); // Consider using password_hash($password, PASSWORD_BCRYPT)
+
+            // Check if faculty already exists
             $check_faculty = mysqli_query($connection, "SELECT * FROM tbl_faculty WHERE faculty_code = '$faculty_code'");
             if (mysqli_num_rows($check_faculty) > 0) {
                 $display = "<div class='message error'>Faculty code already exists.</div>";
                 $modalOpen = true;
             } else {
-                if (mysqli_query($connection, "INSERT INTO tbl_faculty (faculty_code, faculty_name, department_code, password) VALUES ('$faculty_code', '$faculty_name', '$department_code', '$hashed_password')")) {
-                    header("Location: faculty.php?success=Faculty added successfully");
-                    exit();
+                // Insert new faculty record
+                $insert_query = "INSERT INTO tbl_faculty (faculty_code, faculty_name, department_code, password) 
+                                VALUES ('$faculty_code', '$faculty_name', '$department_code', '$hashed_password')";
+
+                if (mysqli_query($connection, $insert_query)) {
+                    $successMessage = "Faculty added successfully!";
                 } else {
-                    $display = "<div class='message error'>Failed to add faculty.</div>";
-                    $modalOpen = true;
+                    echo "<script>alert('Failed to add faculty.');</script>";
                 }
             }
         }
-    
+
         // EDIT FACULTY FUNCTION
         if (isset($_POST['edit_faculty'])) {
             $edit_code = mysqli_real_escape_string($connection, $_POST['edit_code']);
             $edit_name = mysqli_real_escape_string($connection, $_POST['edit_name']);
             $edit_department_code = mysqli_real_escape_string($connection, $_POST['edit_department_code']);
-    
-            // Debugging: Check if data is received
-            if (empty($edit_code) || empty($edit_name) || empty($edit_department_code)) {
-                die("<div class='message error'>Error: Missing data. Please fill all fields.</div>");
-            }
-    
-            // Check if faculty exists
-            $check_faculty = mysqli_query($connection, "SELECT * FROM tbl_faculty WHERE faculty_code = '$edit_code'");
-            if (mysqli_num_rows($check_faculty) == 0) {
-                $display = "<div class='message error'>Faculty code does not exist.</div>";
-            } else {
-                // Update faculty details
+            $edit_password = mysqli_real_escape_string($connection, $_POST['edit_password']);
+
+            if (!empty($edit_password)) {
+                $hashed_password = md5($edit_password); 
                 $update_query = "UPDATE tbl_faculty 
-                                 SET faculty_name = '$edit_name', department_code = '$edit_department_code' 
-                                 WHERE faculty_code = '$edit_code'";
-    
-                if (mysqli_query($connection, $update_query)) {
-                    header("Location: faculty.php?success=Faculty updated successfully");
-                    exit();
-                } else {
-                    die("<div class='message error'>Failed to update faculty: " . mysqli_error($connection) . "</div>");
-                }
+                                SET faculty_name = '$edit_name', department_code = '$edit_department_code', 
+                                    password = '$hashed_password' 
+                                WHERE faculty_code = '$edit_code'";
+            } else {
+                $update_query = "UPDATE tbl_faculty 
+                                SET faculty_name = '$edit_name', department_code = '$edit_department_code' 
+                                WHERE faculty_code = '$edit_code'";
+            }
+
+            if (mysqli_query($connection, $update_query)) {
+                $successMessage = "Faculty updated successfully!";
+            } else {
+                echo "<script>alert('Failed to update faculty.');</script>";
             }
         }
-    }
+}
     
 
     // Handle department Deletion
@@ -93,8 +94,27 @@
         <link type="image/png" rel="icon" href="images/au_logo.png">
         <link rel="stylesheet" href="css/table.css">
         <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+        <script>
+            function closeSuccessModal() {
+                document.getElementById("successModal").style.display = "none";
+            }
+        </script>
+
     </head>
     <body>
+
+        <?php if ($successMessage): ?>
+            <div id="successModal" class="success-modal" style="display:block;">
+                <div class="success-modal-content">
+                    <p><?php echo $successMessage; ?></p>
+                    <button onclick="closeSuccessModal()">OK</button>
+                </div>
+            </div>
+        <?php endif; ?>
+
     <!-- Sidebar Navigation -->
     <nav class="sidebar">
         <div class="sidebar-header">
@@ -110,15 +130,15 @@
         </div>
 
         <ul class="nav-links">
-            <li><a href="admin-profile.php">Profile</a></li>
-            <li><a href="users.php">Users</a></li>
-            <li><a href="school-year.php">School Year</a></li>
-            <li><a href="department.php">Department</a></li>
-            <li><a href="course.php">Course</a></li>
-            <li><a href="subject.php">Subject</a></li>
-            <li><a href="student.php">Student</a></li>
-            <li><a href="faculty.php" class="active">Faculty</a></li>
-            <li><a href="logout.php">Logout</a></li>
+            <li><a href="admin-profile.php"><i class="fas fa-user"></i> Profile</a></li>
+            <li><a href="users.php"><i class="fas fa-users"></i> Users</a></li>
+            <li><a href="school-year.php"><i class="fas fa-calendar"></i> School Year</a></li>
+            <li><a href="department.php"><i class="fas fa-building"></i> Department</a></li>
+            <li><a href="course.php"><i class="fas fa-book"></i> Course</a></li>
+            <li><a href="subject.php"><i class="fas fa-chalkboard-teacher"></i> Subject</a></li>
+            <li><a href="student.php"><i class="fas fa-user-graduate"></i> Student</a></li>
+            <li><a href="faculty.php" class="active"><i class="fas fa-user-tie"></i> Faculty</a></li>
+            <li><a href="logout.php"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
         </ul>
     </nav>
 
@@ -136,7 +156,9 @@
         </div>
 
     <div class="table-container">
-        <button class="add-btn" onclick="openModal()">Add New Faculty</button>
+        <h1 class="title">Faculty Information</h1>
+
+        <button class="add-btn" onclick="openModal()"> <i class="fas fa-plus"></i> Add New Faculty</button>
 
         <?php if (isset($message)) echo $message; ?>
 
@@ -146,8 +168,6 @@
             $rows = mysqli_num_rows($query); 
             if ($rows > 0) {
         ?>
-
-        <h1 class="title">Faculty Information</h1>
 
         <table id="faculty" class="styled-table">
             <thead>
@@ -168,14 +188,41 @@
                     <td><?php echo $data['department_code']; ?></td>
                     <td>
                         <div class="action-buttons">
-                            <button class="btn-edit" onclick="openEditModal('<?php echo $data['faculty_code']; ?>', '<?php echo $data['faculty_name']; ?>', '<?php echo $data['department_code']; ?>')">Edit</button>
-                            <a href="faculty.php?delete=<?php echo $data['faculty_code']; ?>" class="btn-delete" onclick="return confirm('Are you sure you want to delete this faculty?');">Delete</a>
+                            <button class="btn-edit" onclick="openEditModal('<?php echo $data['faculty_code']; ?>', '<?php echo $data['faculty_name']; ?>', '<?php echo $data['department_code']; ?>')"> <i class="fas fa-edit"></i> Edit</button>
+                            <a href="javascript:void(0);" class="btn-delete" onclick="openDeleteModal('<?php echo $data['faculty_code']; ?>')"> <i class="fas fa-trash"></i> Delete</a>
                         </div>
                     </td>
                 </tr>
                 <?php } ?>
             </tbody>
         </table>
+
+        <!-- Delete Confirmation Modal -->
+        <div id="deleteModal" class="delete-modal">
+                <div class="delete-modal-content">
+                    <h2>Are you sure?</h2>
+                    <p>Do you really want to delete this faculty? This action cannot be undone.</p>
+                    <input type="hidden" id="delete_faculty_code">
+                    <button class="btn-confirm" onclick="confirmDelete()">Yes, Delete</button>
+                    <button class="btn-cancel" onclick="closeDeleteModal()">Cancel</button>
+                </div>
+            </div>
+
+            <script>
+                function openDeleteModal(faculty_code) {
+                    document.getElementById("delete_faculty_code").value = faculty_code;
+                    document.getElementById("deleteModal").style.display = "block";
+                }
+
+                function closeDeleteModal() {
+                    document.getElementById("deleteModal").style.display = "none";
+                }
+
+                function confirmDelete() {
+                    var faculty_code = document.getElementById("delete_faculty_code").value;
+                    window.location.href = "faculty.php?delete=" + faculty_code;
+                }
+            </script>
 
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
@@ -283,6 +330,10 @@
                         </option>
                         <?php } ?>
                     </select>
+                    <br>
+
+                    <label for="edit_password">New Password (Leave blank to keep current):</label>
+                    <input type="password" name="edit_password" id="edit_password" placeholder="Enter new password">
                     <br>
                     
                     <input type="submit" name="edit_faculty" value="Update">
