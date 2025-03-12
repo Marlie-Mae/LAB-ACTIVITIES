@@ -51,19 +51,29 @@
             $edit_middle_name = mysqli_real_escape_string($connection, $_POST['edit_middle_name']);
             $edit_course_code = mysqli_real_escape_string($connection, $_POST['edit_course_code']);
             $edit_year_level = mysqli_real_escape_string($connection, $_POST['edit_year_level']);
-    
-            $update_query = "UPDATE tbl_student_info 
-                             SET first_name = '$edit_first_name', last_name = '$edit_last_name', 
-                                 middle_name = '$edit_middle_name', course_code = '$edit_course_code', 
-                                 year_level = '$edit_year_level' 
-                             WHERE student_no = '$edit_student_no'";
-    
+            $edit_password = mysqli_real_escape_string($connection, $_POST['edit_password']);
+        
+            if (!empty($edit_password)) {
+                $hashed_password = md5($edit_password);
+                $update_query = "UPDATE tbl_student_info 
+                                 SET first_name = '$edit_first_name', last_name = '$edit_last_name', 
+                                     middle_name = '$edit_middle_name', course_code = '$edit_course_code', 
+                                     year_level = '$edit_year_level', password = '$hashed_password' 
+                                 WHERE student_no = '$edit_student_no'";
+            } else {
+                $update_query = "UPDATE tbl_student_info 
+                                 SET first_name = '$edit_first_name', last_name = '$edit_last_name', 
+                                     middle_name = '$edit_middle_name', course_code = '$edit_course_code', 
+                                     year_level = '$edit_year_level' 
+                                 WHERE student_no = '$edit_student_no'";
+            }
+        
             if (mysqli_query($connection, $update_query)) {
                 $successMessage = "Student updated successfully!";
             } else {
                 echo "<script>alert('Failed to update student.');</script>";
             }
-        }
+        }        
     }
     
     // Handle Student Deletion
@@ -91,6 +101,7 @@
     <link type="image/png" rel="icon" href="images/au_logo.png">
     <link rel="stylesheet" href="css/table.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
     <script>
         function closeSuccessModal() {
@@ -125,15 +136,15 @@
         </div>
 
         <ul class="nav-links">
-            <li><a href="admin-profile.php">Profile</a></li>
-            <li><a href="users.php">Users</a></li>
-            <li><a href="school-year.php">School Year</a></li>
-            <li><a href="department.php">Department</a></li>
-            <li><a href="course.php">Course</a></li>
-            <li><a href="subject.php">Subject</a></li>
-            <li><a href="student.php" class="active">Student</a></li>
-            <li><a href="faculty.php">Faculty</a></li>
-            <li><a href="logout.php">Logout</a></li>
+            <li><a href="admin-profile.php"><i class="fas fa-user"></i> Profile</a></li>
+            <li><a href="users.php"><i class="fas fa-users"></i> Users</a></li>
+            <li><a href="school-year.php"><i class="fas fa-calendar"></i> School Year</a></li>
+            <li><a href="department.php"><i class="fas fa-building"></i> Department</a></li>
+            <li><a href="course.php"><i class="fas fa-book"></i> Course</a></li>
+            <li><a href="subject.php"><i class="fas fa-chalkboard-teacher"></i> Subject</a></li>
+            <li><a href="student.php" class="active"><i class="fas fa-user-graduate"></i> Student</a></li>
+            <li><a href="faculty.php"><i class="fas fa-user-tie"></i> Faculty</a></li>
+            <li><a href="logout.php"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
         </ul>
     </nav>
 
@@ -150,7 +161,10 @@
         </div>
 
     <div class="table-container">
-        <button class="add-btn" onclick="openModal()">Add New Student</button>
+
+        <h1 class="title">Student Information</h1>
+    
+        <button class="add-btn" onclick="openModal()"> <i class="fas fa-plus"></i> Add New Student</button>
 
         <?php
             include("cn.php");
@@ -158,8 +172,6 @@
             $rows = mysqli_num_rows($query); 
             if ($rows > 0) {
         ?>
-
-        <h1 class="title">Student Information</h1>
         
             <table id="student_info" class="styled-table">
                 <thead>
@@ -184,8 +196,8 @@
                         <td><?php echo $data['year_level']; ?></td>
                         <td>
                             <div class="action-buttons">
-                                <button class="btn-edit" onclick="openEditModal('<?php echo $data['student_no']; ?>', '<?php echo $data['first_name']; ?>', '<?php echo $data['last_name']; ?>', '<?php echo $data['middle_name']; ?>', '<?php echo $data['course_code']; ?>', '<?php echo $data['year_level']; ?>')">Edit</button>
-                                <a href="javascript:void(0);" class="btn-delete" onclick="openDeleteModal('<?php echo $data['student_no']; ?>')">Delete</a>
+                                <button class="btn-edit" onclick="openEditModal('<?php echo $data['student_no']; ?>', '<?php echo $data['first_name']; ?>', '<?php echo $data['last_name']; ?>', '<?php echo $data['middle_name']; ?>', '<?php echo $data['course_code']; ?>', '<?php echo $data['year_level']; ?>')"> <i class="fas fa-edit"></i> Edit</button>
+                                <a href="javascript:void(0);" class="btn-delete" onclick="openDeleteModal('<?php echo $data['student_no']; ?>')"> <i class="fas fa-trash"></i> Delete</a>
                             </div>
                         </td>
                     </tr>
@@ -335,6 +347,10 @@
 
                     <label for="edit_year_level">Year Level:</label>
                     <input type="number" name="edit_year_level" id="edit_year_level" placeholder="Year Level" min="1" max="4" required> <br>
+
+                    <label for="edit_password">New Password (Leave blank to keep current):</label>
+                    <input type="password" name="edit_password" id="edit_password" placeholder="Enter new password">
+                    <br>
 
                     <input type="submit" name="edit_student" value="Update">
                 </form>

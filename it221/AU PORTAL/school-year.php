@@ -13,6 +13,8 @@
     $display = ""; 
     $modalOpen = false;
 
+    $successMessage = "";
+
     if ($_SERVER['REQUEST_METHOD'] == "POST") {
         // ADD FUNCTION
         if (isset($_POST['add_school_year'])) {
@@ -26,12 +28,12 @@
                 $display = "<div class='message error'>School Year Code already exists.</div>";
                 $modalOpen = true;
             } else {
-                if (mysqli_query($connection, "INSERT INTO tbl_school_year (school_year_code, school_year, semester, status) VALUES ('$school_year_code', '$school_year', '$semester', '$status')")) {
-                    header("Location: school-year.php?success=School year added successfully");
-                    exit();
+                $insert_query = "INSERT INTO tbl_school_year (school_year_code, school_year, semester, status) VALUES ('$school_year_code', '$school_year', '$semester', '$status')";
+                
+                if (mysqli_query($connection, $insert_query)) {
+                    $successMessage = "School year added successfully!";
                 } else {
-                    $display = "<div class='message error'>Failed to add school year.</div>";
-                    $modalOpen = true;
+                    echo "<script>alert('Failed to add school year.');</script>";
                 }
             }
         }
@@ -56,17 +58,14 @@
                                  WHERE school_year_code = '$edit_code'";
 
                 if (mysqli_query($connection, $update_query)) {
-                    header("Location: school-year.php?success=School year updated successfully");
-                    exit();
+                    $successMessage = "School year updated successfully!";
                 } else {
-                    die("<div class='message error'>Failed to update school year: " . mysqli_error($connection) . "</div>");
+                    echo "<script>alert('Failed to update school year.');</script>";
                 }
             }
         }
     }
     
-
-    // Handle department Deletion
     if (isset($_GET["delete"])) {
         $school_year_code = mysqli_real_escape_string($connection, $_GET["delete"]);
         $delete_query = "DELETE FROM tbl_school_year WHERE school_year_code = '$school_year_code'";
@@ -90,8 +89,25 @@
         <link type="image/png" rel="icon" href="images/au_logo.png">
         <link rel="stylesheet" href="css/table.css">
         <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+        <script>
+            function closeSuccessModal() {
+                document.getElementById("successModal").style.display = "none";
+            }
+        </script>
     </head>
     <body>
+
+        <?php if ($successMessage): ?>
+            <div id="successModal" class="success-modal" style="display:block;">
+                <div class="success-modal-content">
+                    <p><?php echo $successMessage; ?></p>
+                    <button onclick="closeSuccessModal()">OK</button>
+                </div>
+            </div>
+        <?php endif; ?>
+
         <!-- Sidebar Navigation -->
     <nav class="sidebar">
         <div class="sidebar-header">
@@ -107,15 +123,15 @@
         </div>
 
         <ul class="nav-links">
-            <li><a href="admin-profile.php">Profile</a></li>
-            <li><a href="users.php">Users</a></li>
-            <li><a href="school-year.php" class="active">School Year</a></li>
-            <li><a href="department.php">Department</a></li>
-            <li><a href="course.php">Course</a></li>
-            <li><a href="subject.php">Subject</a></li>
-            <li><a href="student.php">Student</a></li>
-            <li><a href="faculty.php">Faculty</a></li>
-            <li><a href="logout.php">Logout</a></li>
+            <li><a href="admin-profile.php"><i class="fas fa-user"></i> Profile</a></li>
+            <li><a href="users.php"><i class="fas fa-users"></i> Users</a></li>
+            <li><a href="school-year.php" class="active"><i class="fas fa-calendar"></i> School Year</a></li>
+            <li><a href="department.php"><i class="fas fa-building"></i> Department</a></li>
+            <li><a href="course.php"><i class="fas fa-book"></i> Course</a></li>
+            <li><a href="subject.php"><i class="fas fa-chalkboard-teacher"></i> Subject</a></li>
+            <li><a href="student.php"><i class="fas fa-user-graduate"></i> Student</a></li>
+            <li><a href="faculty.php"><i class="fas fa-user-tie"></i> Faculty</a></li>
+            <li><a href="logout.php"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
         </ul>
     </nav>
 
@@ -132,7 +148,9 @@
         </div>
 
     <div class="table-container">
-        <button class="add-btn" onclick="openModal()">Add New School Year</button>
+        <h1 class="title">School Year Information</h1>
+        
+        <button class="add-btn" onclick="openModal()"> <i class="fas fa-plus"></i> Add New School Year</button>
 
         <?php
             include("cn.php");
@@ -141,8 +159,6 @@
             if ($rows > 0) {
         ?>
         
-        <h1 class="title">School Year Information</h1>
-
         <table id="school_year" class="styled-table">
             <thead>
                 <tr>
@@ -164,14 +180,41 @@
                     <td><?php echo $data['status']; ?></td>
                     <td>
                         <div class="action-buttons">
-                            <button class="btn-edit" onclick="openEditModal('<?php echo $data['school_year_code']; ?>', '<?php echo $data['school_year']; ?>', '<?php echo $data['semester']; ?>', '<?php echo $data['status']; ?>')">Edit</button>
-                            <a href="school-year.php?delete=<?php echo $data['school_year_code']; ?>" class="btn-delete" onclick="return confirm('Are you sure?');">Delete</a>
+                            <button class="btn-edit" onclick="openEditModal('<?php echo $data['school_year_code']; ?>', '<?php echo $data['school_year']; ?>', '<?php echo $data['semester']; ?>', '<?php echo $data['status']; ?>')"> <i class="fas fa-edit"></i> Edit</button>
+                            <a href="javascript:void(0);" class="btn-delete" onclick="openDeleteModal('<?php echo $data['school_year_code']; ?>')"> <i class="fas fa-trash"></i> Delete</a>
                         </div>
                     </td>
                 </tr>
                 <?php } ?>
             </tbody>
         </table>
+
+        <!-- Delete Confirmation Modal -->
+        <div id="deleteModal" class="delete-modal">
+                <div class="delete-modal-content">
+                    <h2>Are you sure?</h2>
+                    <p>Do you really want to delete this school year? This action cannot be undone.</p>
+                    <input type="hidden" id="delete_school_year_code">
+                    <button class="btn-confirm" onclick="confirmDelete()">Yes, Delete</button>
+                    <button class="btn-cancel" onclick="closeDeleteModal()">Cancel</button>
+                </div>
+            </div>
+
+            <script>
+                function openDeleteModal(school_year_code) {
+                    document.getElementById("delete_school_year_code").value = school_year_code;
+                    document.getElementById("deleteModal").style.display = "block";
+                }
+
+                function closeDeleteModal() {
+                    document.getElementById("deleteModal").style.display = "none";
+                }
+
+                function confirmDelete() {
+                    var school_year_code = document.getElementById("delete_school_year_code").value;
+                    window.location.href = "school-year.php?delete=" + school_year_code;
+                }
+            </script>
 
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>

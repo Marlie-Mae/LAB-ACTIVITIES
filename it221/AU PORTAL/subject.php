@@ -13,6 +13,8 @@
     $display = ""; // Store messages for success or errors
     $modalOpen = false;
 
+    $successMessage = "";
+
     if ($_SERVER['REQUEST_METHOD'] == "POST") {
         // ADD SUBJECT FUNCTION
         if (isset($_POST['add_subject'])) {
@@ -25,12 +27,12 @@
                 $display = "<div class='message error'>Subject code already exists.</div>";
                 $modalOpen = true;
             } else {
-                if (mysqli_query($connection, "INSERT INTO tbl_subject (subject_code, subject_name, department_code) VALUES ('$subject_code', '$subject_name', '$department_code')")) {
-                    header("Location: subject.php?success=Subject added successfully");
-                    exit();
+                $insert_query = "INSERT INTO tbl_subject (subject_code, subject_name, department_code) VALUES ('$subject_code', '$subject_name', '$department_code')";
+                
+                if (mysqli_query($connection, $insert_query)) {
+                    $successMessage = "Subject added successfully!";
                 } else {
-                    $display = "<div class='message error'>Failed to add subject.</div>";
-                    $modalOpen = true;
+                    echo "<script>alert('Failed to add subject.');</script>";
                 }
             }
         }
@@ -57,10 +59,9 @@
                                  WHERE subject_code = '$edit_code'";
         
                 if (mysqli_query($connection, $update_query)) {
-                    header("Location: subject.php?success=Subject updated successfully");
-                    exit();
+                    $successMessage = "Department updated successfully!";
                 } else {
-                    die("<div class='message error'>Failed to update subject: " . mysqli_error($connection) . "</div>");
+                    echo "<script>alert('Failed to update department.');</script>";
                 }
             }
         }        
@@ -91,8 +92,24 @@
         <link type="image/png" rel="icon" href="images/au_logo.png">
         <link rel="stylesheet" href="css/table.css">
         <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+        <script>
+            function closeSuccessModal() {
+                document.getElementById("successModal").style.display = "none";
+            }
+        </script>
     </head>
     <body>
+
+        <?php if ($successMessage): ?>
+            <div id="successModal" class="success-modal" style="display:block;">
+                <div class="success-modal-content">
+                    <p><?php echo $successMessage; ?></p>
+                    <button onclick="closeSuccessModal()">OK</button>
+                </div>
+            </div>
+        <?php endif; ?>
 
     <!-- Sidebar Navigation -->
     <nav class="sidebar">
@@ -109,15 +126,15 @@
         </div>
 
         <ul class="nav-links">
-            <li><a href="admin-profile.php">Profile</a></li>
-            <li><a href="users.php">Users</a></li>
-            <li><a href="school-year.php">School Year</a></li>
-            <li><a href="department.php">Department</a></li>
-            <li><a href="course.php">Course</a></li>
-            <li><a href="subject.php" class="active">Subject</a></li>
-            <li><a href="student.php">Student</a></li>
-            <li><a href="faculty.php">Faculty</a></li>
-            <li><a href="logout.php">Logout</a></li>
+            <li><a href="admin-profile.php"><i class="fas fa-user"></i> Profile</a></li>
+            <li><a href="users.php"><i class="fas fa-users"></i> Users</a></li>
+            <li><a href="school-year.php"><i class="fas fa-calendar"></i> School Year</a></li>
+            <li><a href="department.php"><i class="fas fa-building"></i> Department</a></li>
+            <li><a href="course.php"><i class="fas fa-book"></i> Course</a></li>
+            <li><a href="subject.php" class="active"><i class="fas fa-chalkboard-teacher"></i> Subject</a></li>
+            <li><a href="student.php"><i class="fas fa-user-graduate"></i> Student</a></li>
+            <li><a href="faculty.php"><i class="fas fa-user-tie"></i> Faculty</a></li>
+            <li><a href="logout.php"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
         </ul>
     </nav>
 
@@ -134,7 +151,9 @@
         </div>
 
     <div class="table-container">
-        <button class="add-btn" onclick="openModal()">Add New Student</button>
+        <h1 class="title">Subject Information</h1>
+
+        <button class="add-btn" onclick="openModal()"> <i class="fas fa-plus"></i> Add New Subject</button>
 
         <?php if (isset($message)) echo $message; ?>
 
@@ -144,8 +163,6 @@
             $rows = mysqli_num_rows($query); 
             if ($rows > 0) {
         ?>
-
-    <h1 class="title">Subject Information</h1>
 
         <table id="subject" class="styled-table">
             <thead>
@@ -165,13 +182,40 @@
                     <td><?php echo $data['subject_name']; ?></td>
                     <td><?php echo $data['department_code']; ?></td>
                     <td>
-                        <button onclick="openEditModal('<?php echo $data['subject_code']; ?>', '<?php echo $data['subject_name']; ?>', '<?php echo $data['department_code']; ?>')" class="btn-edit">Edit</button>
-                        <a href="subject.php?delete=<?php echo $data['subject_code']; ?>" class="btn-delete" onclick="return confirm('Are you sure you want to delete this subject?');">Delete</a>
+                        <button onclick="openEditModal('<?php echo $data['subject_code']; ?>', '<?php echo $data['subject_name']; ?>', '<?php echo $data['department_code']; ?>')" class="btn-edit"> <i class="fas fa-edit"></i> Edit</button>
+                        <a href="javascript:void(0);" class="btn-delete" onclick="openDeleteModal('<?php echo $data['subject_code']; ?>')"> <i class="fas fa-trash"></i> Delete</a>
                     </td>
                 </tr>
                 <?php } ?>
             </tbody>
         </table>
+
+        <!-- Delete Confirmation Modal -->
+        <div id="deleteModal" class="delete-modal">
+                <div class="delete-modal-content">
+                    <h2>Are you sure?</h2>
+                    <p>Do you really want to delete this subject? This action cannot be undone.</p>
+                    <input type="hidden" id="delete_subject_code">
+                    <button class="btn-confirm" onclick="confirmDelete()">Yes, Delete</button>
+                    <button class="btn-cancel" onclick="closeDeleteModal()">Cancel</button>
+                </div>
+            </div>
+
+            <script>
+                function openDeleteModal(subject_code) {
+                    document.getElementById("delete_subject_code").value = subject_code;
+                    document.getElementById("deleteModal").style.display = "block";
+                }
+
+                function closeDeleteModal() {
+                    document.getElementById("deleteModal").style.display = "none";
+                }
+
+                function confirmDelete() {
+                    var subject_code = document.getElementById("delete_subject_code").value;
+                    window.location.href = "subject.php?delete=" + subject_code;
+                }
+            </script>
 
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>

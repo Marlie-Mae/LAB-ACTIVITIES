@@ -13,6 +13,8 @@
     $message_display = ""; 
     $modalOpen = false;
 
+    $successMessage = "";
+
     if ($_SERVER['REQUEST_METHOD'] == "POST") {
         // ADD USER FUNCTION
         if (isset($_POST['add_user'])) {
@@ -32,39 +34,42 @@
                                       VALUES ('$new_user_id', '$hashed_password', '$new_account_type', '$new_status')";
     
                 if (mysqli_query($connection, $insert_user_query)) {
-                    header("Location: users.php?success=User added successfully");
-                    exit();
+                    $successMessage = "Users added successfully!";
                 } else {
-                    $message_display = "<div class='message error'>Failed to add user.</div>";
-                    $modalOpen = true;
+                    echo "<script>alert('Failed to add subject.');</script>";
                 }
             }
         }
     
         // EDIT USER FUNCTION
         if (isset($_POST['edit_user'])) {
-            $edit_user_id = mysqli_real_escape_string($connection, $_POST['edit_user_id']); // FIXED
-            $edit_account_type = mysqli_real_escape_string($connection, $_POST['edit_account_type']); // FIXED
-            $edit_status = mysqli_real_escape_string($connection, $_POST['edit_status']); // FIXED
-    
-            // Check if user exists
-            $check_existing_user = mysqli_query($connection, "SELECT * FROM tbl_users WHERE user_id = '$edit_user_id'");
-            if (mysqli_num_rows($check_existing_user) == 0) {
-                $message_display = "<div class='message error'>User ID does not exist.</div>";
+            $edit_user_id = mysqli_real_escape_string($connection, $_POST['edit_user_id']); 
+            $edit_password = mysqli_real_escape_string($connection, $_POST['edit_password']);
+            $edit_account_type = mysqli_real_escape_string($connection, $_POST['edit_account_type']); 
+            $edit_status = mysqli_real_escape_string($connection, $_POST['edit_status']); 
+
+            // If a new password is provided, hash it; otherwise, keep the current password
+            if (!empty($edit_password)) {
+                $hashed_password = md5($edit_password); 
+                $update_query = "UPDATE tbl_users 
+                                SET account_type = '$edit_account_type', 
+                                    status = '$edit_status', 
+                                    password = '$hashed_password' 
+                                WHERE user_id = '$edit_user_id'";
             } else {
-                // Update user details
-                $update_user_query = "UPDATE tbl_users 
-                                      SET account_type = '$edit_account_type', status = '$edit_status'
-                                      WHERE user_id = '$edit_user_id'";
-    
-                if (mysqli_query($connection, $update_user_query)) {
-                    header("Location: users.php?success=User updated successfully");
-                    exit();
-                } else {
-                    $message_display = "<div class='message error'>Failed to update user: " . mysqli_error($connection) . "</div>";
-                }
+                $update_query = "UPDATE tbl_users 
+                                SET account_type = '$edit_account_type', 
+                                    status = '$edit_status' 
+                                WHERE user_id = '$edit_user_id'";
+            }
+
+            if (mysqli_query($connection, $update_query)) {
+                $successMessage = "User updated successfully!";
+            } else {
+                echo "<script>alert('Failed to update user.');</script>";
             }
         }
+
     }
 
     // Handle User Deletion
@@ -91,8 +96,25 @@
         <link type="image/png" rel="icon" href="images/au_logo.png">
         <link rel="stylesheet" href="css/table.css">
         <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+        <script>
+            function closeSuccessModal() {
+                document.getElementById("successModal").style.display = "none";
+            }
+        </script>
+    
     </head>
     <body>
+
+        <?php if ($successMessage): ?>
+            <div id="successModal" class="success-modal" style="display:block;">
+                <div class="success-modal-content">
+                    <p><?php echo $successMessage; ?></p>
+                    <button onclick="closeSuccessModal()">OK</button>
+                </div>
+            </div>
+        <?php endif; ?>
 
    <!-- Sidebar Navigation -->
    <nav class="sidebar">
@@ -109,15 +131,15 @@
         </div>
 
         <ul class="nav-links">
-            <li><a href="admin-profile.php">Profile</a></li>
-            <li><a href="users.php" class="active">Users</a></li>
-            <li><a href="school-year.php">School Year</a></li>
-            <li><a href="department.php">Department</a></li>
-            <li><a href="course.php">Course</a></li>
-            <li><a href="subject.php">Subject</a></li>
-            <li><a href="student.php">Student</a></li>
-            <li><a href="faculty.php">Faculty</a></li>
-            <li><a href="logout.php">Logout</a></li>
+            <li><a href="admin-profile.php"><i class="fas fa-user"></i> Profile</a></li>
+            <li><a href="users.php" class="active"><i class="fas fa-users"></i> Users</a></li>
+            <li><a href="school-year.php"><i class="fas fa-calendar"></i> School Year</a></li>
+            <li><a href="department.php"><i class="fas fa-building"></i> Department</a></li>
+            <li><a href="course.php"><i class="fas fa-book"></i> Course</a></li>
+            <li><a href="subject.php"><i class="fas fa-chalkboard-teacher"></i> Subject</a></li>
+            <li><a href="student.php"><i class="fas fa-user-graduate"></i> Student</a></li>
+            <li><a href="faculty.php"><i class="fas fa-user-tie"></i> Faculty</a></li>
+            <li><a href="logout.php"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
         </ul>
     </nav>
 
@@ -134,7 +156,10 @@
         </div>
 
         <div class="table-container">
-            <button class="add-btn" onclick="openModal()">Add New User</button>
+
+            <h1 class="title">Users Information</h1>
+
+            <button class="add-btn" onclick="openModal()"> <i class="fas fa-plus"></i> Add New User</button>
 
         <?php
             include("cn.php");
@@ -142,8 +167,6 @@
             $rows = mysqli_num_rows($query); 
             if ($rows > 0) {
         ?>
-
-        <h1 class="title">Users Information</h1>
 
         <table id="users" class="styled-table">
             <thead>
@@ -164,14 +187,41 @@
                     <td><?php echo $data['status']; ?></td>
                     <td>
                         <div class="action-buttons">
-                            <button class="btn-edit" onclick="openEditModal('<?php echo $data['user_id']; ?>', '<?php echo $data['account_type']; ?>', '<?php echo $data['status']; ?>')">Edit</button>
-                            <a href="users.php?delete=<?php echo $data['user_id']; ?>" class="btn-delete" onclick="return confirm('Are you sure you want to delete this user?');">Delete</a>
+                            <button class="btn-edit" onclick="openEditModal('<?php echo $data['user_id']; ?>', '<?php echo $data['account_type']; ?>', '<?php echo $data['status']; ?>')"> <i class="fas fa-edit"></i> Edit</button>
+                            <a href="javascript:void(0);" class="btn-delete" onclick="openDeleteModal('<?php echo $data['user_id']; ?>')"> <i class="fas fa-trash"></i> Delete</a>
                         </div>
                     </td>
                 </tr>
                 <?php } ?>
             </tbody>
         </table>
+
+        <!-- Delete Confirmation Modal -->
+        <div id="deleteModal" class="delete-modal">
+                <div class="delete-modal-content">
+                    <h2>Are you sure?</h2>
+                    <p>Do you really want to delete this user? This action cannot be undone.</p>
+                    <input type="hidden" id="delete_user_id">
+                    <button class="btn-confirm" onclick="confirmDelete()">Yes, Delete</button>
+                    <button class="btn-cancel" onclick="closeDeleteModal()">Cancel</button>
+                </div>
+            </div>
+
+            <script>
+                function openDeleteModal(user_id) {
+                    document.getElementById("delete_user_id").value = user_id;
+                    document.getElementById("deleteModal").style.display = "block";
+                }
+
+                function closeDeleteModal() {
+                    document.getElementById("deleteModal").style.display = "none";
+                }
+
+                function confirmDelete() {
+                    var user_id = document.getElementById("delete_user_id").value;
+                    window.location.href = "users.php?delete=" + user_id;
+                }
+            </script>
 
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
@@ -255,6 +305,10 @@
 
                 <form method="POST">
                     <input type="hidden" name="edit_user_id" id="edit_user_id"> 
+
+                    <label for="edit_password">New Password (Leave blank to keep current):</label>
+                    <input type="password" name="edit_password" id="edit_password" placeholder="Enter new password">
+                    <br>
 
                     <label for="edit_account_type">Account Type:</label>
                     <select name="edit_account_type" id="edit_account_type" required> 
