@@ -18,12 +18,12 @@ body {
 .hamburger {
     display: none; /* Hidden by default */
     font-size: 30px;
-    color: #002366;
+    color: #002366 !important;
     padding: 15px;
     cursor: pointer;
     position: fixed;
-    top: 5px;
-    left: 20px;
+    top: 0px;
+    left: 5px;
     z-index: 20;
 }
 
