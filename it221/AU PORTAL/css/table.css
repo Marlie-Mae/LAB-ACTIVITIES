@@ -16,7 +16,7 @@ body {
 /* Hamburger Icon - Hidden by Default on Large Screens */
 .hamburger {
     font-size: 30px;
-    color: white;
+    color: white !important;
     cursor: pointer;
     position: absolute;
     left: 15px; /* Aligns the hamburger to the left */
@@ -687,7 +687,7 @@ body.modal-open {
 
     .btn-delete{
         margin-left: 1px;
-        margin-top: 1px;
+        margin-top: 5px;
     }
 
     .btn-edit, .btn-delete {
@@ -727,6 +727,7 @@ body.modal-open {
         width: 100%; /* Make buttons full width */
         text-align: center;
     }
+    
 }
 
 /* Responsive Design */
@@ -745,6 +746,27 @@ body.modal-open {
     }
     .table-container{
         margin-top: 0;
+    }
+    .dataTables_filter {
+        width: 100%; /* Ensures full width for responsiveness */
+        display: flex; /* Use flexbox */
+        justify-content: flex-start; /* Align search box to the left */
+        margin-top: -2px !important;
+        margin-bottom: 20px !important;
+    }
+    
+    .dataTables_wrapper {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between; /* Keeps elements aligned properly */
+        align-items: center;
+    }
+    .dataTables_wrapper .dataTables_paginate {
+        text-align: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
     }
 }
 
