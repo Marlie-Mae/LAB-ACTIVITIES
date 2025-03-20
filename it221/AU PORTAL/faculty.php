@@ -311,7 +311,9 @@
                 <span class="close" onclick="closeEditModal()">&times;</span>
                 <h1>Edit Faculty</h1>
                 <form method="POST">
-                    <input type="hidden" name="edit_code" id="edit_code">
+                    <label for="edit_code">Faculty Code:</label>
+                    <input type="text" name="edit_code" id="edit_code" readonly> 
+                    <br>
                     
                     <label for="faculty_name">Faculty Name</label>
                     <input type="text" name="edit_name" id="edit_name" required> <br>

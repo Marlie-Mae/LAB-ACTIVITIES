@@ -304,7 +304,13 @@
                 <h1>Edit User</h1>
 
                 <form method="POST">
+                    <label for="edit_user_id">User ID:</label>
+                    <input type="text" name="edit_user_id" id="edit_user_id" readonly> 
+                    <br>
+
+                    <!--
                     <input type="hidden" name="edit_user_id" id="edit_user_id"> 
+                     -->
 
                     <label for="edit_password">New Password (Leave blank to keep current):</label>
                     <input type="password" name="edit_password" id="edit_password" placeholder="Enter new password">

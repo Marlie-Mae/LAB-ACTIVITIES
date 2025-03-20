@@ -292,8 +292,9 @@
                 <span class="close" onclick="closeEditModal()">&times;</span>
                 <h1>Edit School Year</h1>
                 <form method="POST">
-                    <!-- Hidden field for school year code -->
-                    <input type="hidden" name="edit_code" id="edit_code">
+                    <label for="edit_code">School Year Code:</label>
+                    <input type="text" name="edit_code" id="edit_code" readonly> 
+                    <br>
 
                     <label>School Year:</label>
                     <input type="text" name="edit_school_year_value" id="edit_school_year" required>

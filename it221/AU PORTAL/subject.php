@@ -296,8 +296,10 @@
                 <span class="close" onclick="closeEditModal()">&times;</span>
                 <h1>Edit Subject</h1>
                 <form method="POST">
-                    <input type="hidden" name="edit_subject_code" id="edit_subject_code">
-                    
+                    <label for="edit_subject_code">Subject Code:</label>
+                    <input type="text" name="edit_subject_code" id="edit_subject_code" readonly> 
+                    <br>
+          
                     <label for="edit_subject_name">Subject Name:</label>
                     <input type="text" name="edit_subject_name" id="edit_subject_name" required>
 

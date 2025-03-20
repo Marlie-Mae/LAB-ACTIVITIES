@@ -323,7 +323,9 @@
                 <span class="close" onclick="closeEditModal()">&times;</span>
                 <h1>Edit Student</h1>
                 <form method="POST">
-                    <input type="hidden" name="edit_student_no" id="edit_student_no">
+                    <label for="edit_student_no">Student No.:</label>
+                    <input type="text" name="edit_student_no" id="edit_student_no" readonly> 
+                    <br>
 
                     <label for="edit_last_name">Last Name:</label>
                     <input type="text" name="edit_last_name" id="edit_last_name" placeholder="Last Name" required> <br>

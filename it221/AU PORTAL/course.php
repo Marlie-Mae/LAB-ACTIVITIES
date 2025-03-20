@@ -283,8 +283,11 @@
                 <span class="close" onclick="closeEditModal()">&times;</span>
                 <h1>Edit Course</h1>
                 <form method="POST">
-                    <input type="hidden" name="edit_code" id="edit_code">
-                    <label>Course Name:</label>
+                    <label for="edit_code">Course Code:</label>
+                    <input type="text" name="edit_code" id="edit_code" readonly> 
+                    <br>
+
+                    <label>Course Description:</label>
                     <input type="text" name="edit_name" id="edit_name" required>
                     <input type="submit" name="edit_course" value="Update">
                 </form>
