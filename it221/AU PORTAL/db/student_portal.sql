@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3307
--- Generation Time: Mar 08, 2025 at 04:40 AM
+-- Generation Time: Mar 22, 2025 at 03:03 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -37,10 +37,11 @@ CREATE TABLE `tbl_course` (
 --
 
 INSERT INTO `tbl_course` (`course_code`, `course_description`) VALUES
-('BEED', 'Bachelor of Elementary Education'),
+('BEED', 'Bachelor of Science in Elementary Education'),
 ('BPA', 'Bachelor of Public Administration'),
 ('BSACC', 'Bachelor of Science in Accountancy'),
 ('BSBA', 'Bachelor of Science in Business Administration'),
+('BSC', 'Bachelor of Science in Criminology'),
 ('BSCS', 'Bachelor of Science in Computer Science'),
 ('BSECE', 'Bachelor of Science in Electronics Engineering'),
 ('BSED', 'Bachelor of Secondary Education'),
@@ -68,6 +69,7 @@ CREATE TABLE `tbl_department` (
 INSERT INTO `tbl_department` (`department_code`, `department_name`) VALUES
 ('ACC', 'Accountancy'),
 ('BUS', 'Business Administration'),
+('CRM', 'Criminology'),
 ('CS', 'Computer Science'),
 ('EDU', 'Education'),
 ('ENG', 'Engineering'),
@@ -97,10 +99,9 @@ CREATE TABLE `tbl_faculty` (
 INSERT INTO `tbl_faculty` (`faculty_code`, `faculty_name`, `department_code`, `password`) VALUES
 ('CS-0001', 'Ryan Fadrigo', 'CS', '827ccb0eea8a706c4c34a16891f84e7b'),
 ('EDU-0001', 'John Doe', 'EDU', '827ccb0eea8a706c4c34a16891f84e7b'),
+('HRM-001', 'Teodora Alonzo', 'CRM', '827ccb0eea8a706c4c34a16891f84e7b'),
 ('IT-0001', 'Maylane Ballita', 'IT', '827ccb0eea8a706c4c34a16891f84e7b'),
-('IT-0002', 'Shiela Dala', 'IT', '827ccb0eea8a706c4c34a16891f84e7b'),
-('PSY-001', 'Sigmund Freud', 'PSY', '827ccb0eea8a706c4c34a16891f84e7b'),
-('PSY-002', 'Jane Doe', 'PSY', '827ccb0eea8a706c4c34a16891f84e7b');
+('IT-0002', 'Shiela Dala', 'CS', '827ccb0eea8a706c4c34a16891f84e7b');
 
 -- --------------------------------------------------------
 
@@ -120,7 +121,7 @@ CREATE TABLE `tbl_school_year` (
 --
 
 INSERT INTO `tbl_school_year` (`school_year_code`, `school_year`, `semester`, `status`) VALUES
-('2024-2025-1', '2024-2025', '1', 'active'),
+('2024-2025-1', '2024-2025', '1', 'inactive'),
 ('2024-2025-2', '2024-2025', '2', 'active'),
 ('2025-2026-1', '2025-2026', '1', 'inactive'),
 ('2025-2026-2', '2025-2026', '2', 'inactive');
@@ -147,12 +148,13 @@ CREATE TABLE `tbl_student_info` (
 
 INSERT INTO `tbl_student_info` (`student_no`, `last_name`, `first_name`, `middle_name`, `course_code`, `year_level`, `password`) VALUES
 ('22-0001', 'Awayan', 'Marlie Mae', 'Borbon', 'BSIT', 3, '827ccb0eea8a706c4c34a16891f84e7b'),
-('22-0002', 'Hans', 'James', 'Lim', 'BSIT', 4, '827ccb0eea8a706c4c34a16891f84e7b'),
-('22-0003', 'Biago', 'Elda', 'Borbon', 'BSBA', 2, '827ccb0eea8a706c4c34a16891f84e7b'),
-('22-0004', 'Lennon', 'Kate', 'Lim', 'BEED', 4, '827ccb0eea8a706c4c34a16891f84e7b'),
-('22-0005', 'Ramos', 'Jack', 'Reyes', 'BSP', 3, '827ccb0eea8a706c4c34a16891f84e7b'),
-('22-0006', 'Tejero', 'Gary', 'Dantes', 'BSBA', 2, '827ccb0eea8a706c4c34a16891f84e7b'),
-('22-0007', 'Windsor', 'Elizabeth', 'Chu', 'BSHM', 1, '827ccb0eea8a706c4c34a16891f84e7b');
+('22-0002', 'Lim', 'James', 'Lim', 'BEED', 2, '827ccb0eea8a706c4c34a16891f84e7b'),
+('22-0003', 'Biago', 'Elda', 'Borbon', 'BSCS', 1, '827ccb0eea8a706c4c34a16891f84e7b'),
+('22-0004', 'Lennon', 'Kate', 'Lim', 'BSIT', 4, '827ccb0eea8a706c4c34a16891f84e7b'),
+('22-0005', 'Fernandez', 'Jack', 'Reyes', 'BSME', 1, '827ccb0eea8a706c4c34a16891f84e7b'),
+('22-0006', 'Tejero', 'Gary', 'Dantes', 'BSECE', 2, '827ccb0eea8a706c4c34a16891f84e7b'),
+('22-0007', 'Windsor', 'Elizabeth', 'Chu', 'BSN', 4, '827ccb0eea8a706c4c34a16891f84e7b'),
+('22-0008', 'Fadrigo', 'Ryan', 'Santos', 'BSN', 2, '827ccb0eea8a706c4c34a16891f84e7b');
 
 -- --------------------------------------------------------
 
@@ -171,7 +173,7 @@ CREATE TABLE `tbl_subject` (
 --
 
 INSERT INTO `tbl_subject` (`subject_code`, `subject_name`, `department_code`) VALUES
-('GCAS-220', 'Ethics', 'EDU'),
+('GCS-101', 'Mathematics in the Modern World', 'ACC'),
 ('IT220', 'Software Engineering', 'IT'),
 ('IT221', 'Elective 4', 'IT'),
 ('ITC128', 'Social and Professional Issure', 'IT'),
@@ -196,11 +198,13 @@ CREATE TABLE `tbl_users` (
 
 INSERT INTO `tbl_users` (`user_id`, `password`, `account_type`, `status`) VALUES
 ('admin', '21232f297a57a5a743894a0e4a801fc3', 'admin', 'active'),
-('admin01', '18c6d818ae35a3e8279b5330eda01498', 'admin', 'inactive'),
+('admin01', '21232f297a57a5a743894a0e4a801fc3', 'admin', 'inactive'),
 ('Marlie-Admin', '21232f297a57a5a743894a0e4a801fc3', 'admin', 'active'),
 ('Marlie-User', '827ccb0eea8a706c4c34a16891f84e7b', 'user', 'active'),
 ('Marlie01', '827ccb0eea8a706c4c34a16891f84e7b', 'user', 'active'),
-('User01', '827ccb0eea8a706c4c34a16891f84e7b', 'user', 'inactive');
+('Ryan-Admin', '21232f297a57a5a743894a0e4a801fc3', 'admin', 'active'),
+('User01', '827ccb0eea8a706c4c34a16891f84e7b', 'user', 'active'),
+('User02', '827ccb0eea8a706c4c34a16891f84e7b', 'user', 'active');
 
 --
 -- Indexes for dumped tables

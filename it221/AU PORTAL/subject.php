@@ -59,9 +59,9 @@
                                  WHERE subject_code = '$edit_code'";
         
                 if (mysqli_query($connection, $update_query)) {
-                    $successMessage = "Department updated successfully!";
+                    $successMessage = "Subject updated successfully!";
                 } else {
-                    echo "<script>alert('Failed to update department.');</script>";
+                    echo "<script>alert('Failed to update subject.');</script>";
                 }
             }
         }        

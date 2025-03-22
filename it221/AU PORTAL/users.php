@@ -34,9 +34,9 @@
                                       VALUES ('$new_user_id', '$hashed_password', '$new_account_type', '$new_status')";
     
                 if (mysqli_query($connection, $insert_user_query)) {
-                    $successMessage = "Users added successfully!";
+                    $successMessage = "User added successfully!";
                 } else {
-                    echo "<script>alert('Failed to add subject.');</script>";
+                    echo "<script>alert('Failed to add user.');</script>";
                 }
             }
         }
