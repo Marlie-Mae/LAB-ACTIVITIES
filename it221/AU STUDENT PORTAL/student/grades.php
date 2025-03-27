@@ -7,7 +7,6 @@ if (!isset($_SESSION['student_no'])) {
 }
 
 $student_no = mysqli_real_escape_string($connection, $_SESSION['student_no']);
-
 $query = mysqli_query($connection, "SELECT * FROM tbl_student_info WHERE student_no = '$student_no'");
 $row = mysqli_fetch_assoc($query);
 
@@ -55,7 +54,7 @@ $result = mysqli_query($connection, $sql);
                 <img src="images/default.jpg" alt="Student Image">
             </div>
             <div class="user-info">
-                <p><?php echo $student_no; ?></p>
+                <p><strong><?php echo $student_no; ?></strong></p>
                 <p><?php echo $row["last_name"] . ", " . $row["first_name"] . " " . $row["middle_name"]; ?></p>
             </div>
         </div>
