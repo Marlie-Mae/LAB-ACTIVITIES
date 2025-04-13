@@ -800,27 +800,3 @@ body.modal-open {
         font-size: 16px;
     }
 }
-
-/*disable buttons*/
-button[disabled] {
-    opacity: 0.6;
-    cursor: not-allowed;
-}
-button[disabled]:hover::after {
-    content: attr(title);
-    position: absolute;
-    background: #333;
-    color: #fff;
-    padding: 5px 8px;
-    border-radius: 4px;
-    top: 100%;
-    left: 0;
-    white-space: nowrap;
-    transform: translateY(5px);
-    z-index: 1000;
-}
-a.disabled-link {
-    pointer-events: none;
-    opacity: 0.6;
-    cursor: not-allowed;
-}

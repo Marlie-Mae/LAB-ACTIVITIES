@@ -1,73 +1,73 @@
 <?php
-    include("cn.php");
-    session_start();
-    if (!isset($_SESSION['user_id'])) {
-        header("location: login.php");
+include("cn.php");
+session_start();
+if (!isset($_SESSION['user_id'])) {
+    header("location: login.php");
+    exit();
+}
+
+$user_id = mysqli_real_escape_string($connection, $_SESSION['user_id']);
+$query = mysqli_query($connection, "SELECT * FROM tbl_users WHERE user_id = '$user_id'");
+$row = mysqli_fetch_assoc($query);
+
+// Check if user is a regular user (not admin)
+$isUser = ($row['account_type'] === 'user');
+
+$display = "";
+$modalOpen = false;
+$successMessage = "";
+
+// Handle Add and Edit only if not user
+if ($_SERVER['REQUEST_METHOD'] == "POST" && !$isUser) {
+    if (isset($_POST['add_course'])) {
+        $course_code = mysqli_real_escape_string($connection, $_POST['course_code']);
+        $course_name = mysqli_real_escape_string($connection, $_POST['course_name']);
+
+        $check_course_code = mysqli_query($connection, "SELECT * FROM tbl_course WHERE course_code = '$course_code'");
+        if (mysqli_num_rows($check_course_code) > 0) {
+            $display = "<div class='message error'>Course code already exists.</div>";
+            $modalOpen = true;
+        } else {
+            $insert_query = "INSERT INTO tbl_course (course_code, course_description) VALUES ('$course_code', '$course_name')";
+            if (mysqli_query($connection, $insert_query)) {
+                $successMessage = "Course added successfully!";
+            } else {
+                echo "<script>alert('Failed to add course.');</script>";
+            }
+        }
+    }
+
+    if (isset($_POST['edit_course'])) {
+        $edit_code = mysqli_real_escape_string($connection, $_POST['edit_code']);
+        $edit_name = mysqli_real_escape_string($connection, $_POST['edit_name']);
+
+        $check_course = mysqli_query($connection, "SELECT * FROM tbl_course WHERE course_code = '$edit_code'");
+        if (mysqli_num_rows($check_course) == 0) {
+            $display = "<div class='message error'>Course code does not exist.</div>";
+        } else {
+            $update_query = "UPDATE tbl_course SET course_description = '$edit_name' WHERE course_code = '$edit_code'";
+            if (mysqli_query($connection, $update_query)) {
+                $successMessage = "Course updated successfully!";
+            } else {
+                echo "<script>alert('Failed to update course.');</script>";
+            }
+        }
+    }
+}
+
+// Handle Delete only if not user
+if (isset($_GET["delete"]) && !$isUser) {
+    $course_code = mysqli_real_escape_string($connection, $_GET["delete"]);
+    $delete_query = "DELETE FROM tbl_course WHERE course_code = '$course_code'";
+
+    if (mysqli_query($connection, $delete_query)) {
+        header("Location: course.php?success=Course deleted successfully");
+        exit();
+    } else {
+        header("Location: course.php?error=Failed to delete course");
         exit();
     }
-
-    $user_id = mysqli_real_escape_string($connection, $_SESSION['user_id']);
-    $query = mysqli_query($connection, "SELECT * FROM tbl_users WHERE user_id = '$user_id'");
-    $row = mysqli_fetch_assoc($query);
-
-    $display = ""; 
-    $modalOpen = false;
-
-    $successMessage = "";
-
-    if ($_SERVER['REQUEST_METHOD'] == "POST") {
-        if (isset($_POST['add_course'])) {
-            $course_code = mysqli_real_escape_string($connection, $_POST['course_code']);
-            $course_name = mysqli_real_escape_string($connection, $_POST['course_name']);
-    
-            $check_course_code = mysqli_query($connection, "SELECT * FROM tbl_course WHERE course_code = '$course_code'");
-            if (mysqli_num_rows($check_course_code) > 0) {
-                $display = "<div class='message error'>Course code already exists.</div>";
-                $modalOpen = true;
-            } else {
-                $insert_query = "INSERT INTO tbl_course (course_code, course_description) VALUES ('$course_code', '$course_name')";
-                
-                if (mysqli_query($connection, $insert_query)) {
-                    $successMessage = "Course added successfully!";
-                } else {
-                    echo "<script>alert('Failed to add course.');</script>";
-                }
-            }
-        }
-
-        if (isset($_POST['edit_course'])) {
-            $edit_code = mysqli_real_escape_string($connection, $_POST['edit_code']);
-            $edit_name = mysqli_real_escape_string($connection, $_POST['edit_name']);
-
-            // Check if course exists before updating
-            $check_course = mysqli_query($connection, "SELECT * FROM tbl_course WHERE course_code = '$edit_code'");
-            if (mysqli_num_rows($check_course) == 0) {
-                $display = "<div class='message error'>Course code does not exist.</div>";
-            } else {
-                $update_query = "UPDATE tbl_course SET course_description = '$edit_name' WHERE course_code = '$edit_code'";
-                if (mysqli_query($connection, $update_query)) {
-                    $successMessage = "Course updated successfully!";
-                } else {
-                    echo "<script>alert('Failed to update course.');</script>";
-                }
-            }
-        }
-    }
-
-    // Handle Course Deletion
-    if (isset($_GET["delete"])) {
-        $course_code = mysqli_real_escape_string($connection, $_GET["delete"]);
-        $delete_query = "DELETE FROM tbl_course WHERE course_code = '$course_code'";
-
-        if (mysqli_query($connection, $delete_query)) {
-            header("Location: course.php?success=Course deleted successfully");
-            exit();
-        } else {
-            header("Location: course.php?error=Failed to delete course");
-            exit();
-        }
-    }
-    
+}
 
 ?>
 

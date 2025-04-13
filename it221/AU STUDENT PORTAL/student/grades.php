@@ -27,8 +27,10 @@ $sql = "SELECT
         INNER JOIN tbl_subject subj ON sc.subject_code = subj.subject_code
         INNER JOIN tbl_class_list cl ON sc.class_code = cl.class_code
         WHERE cl.student_no = '$student_no'
+        AND g.student_no = '$student_no'
         AND sc.school_year = '$school_year' 
         AND sc.semester = '$semester'";
+
 
 $result = mysqli_query($connection, $sql);
 ?>
